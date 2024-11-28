@@ -1,0 +1,18 @@
+[project]
+name = "p2pool-api"
+version = "0.0.1"
+authors = [
+  { name="hreikin", email="hreikin@gmail.com" },
+]
+description = "Allows interacting with the P2Pool API."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/hreikin/p2pool-api"
+Issues = "https://github.com/hreikin/p2pool-api/issues"
