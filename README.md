@@ -4,9 +4,11 @@ This module provides the `P2PoolAPI` object to allow interacting with the P2Pool
 
 ## Installation
 
-The module can be installed from Github with pip:
+The module can be installed from PyPi or Github with pip:
 
 ```
+pip install p2pool-api
+# or to install from the Github repository
 pip install p2pool-api@git+https://github.com/hreikin/p2pool-api.git@main
 ```
 
@@ -23,6 +25,6 @@ x = p2pool_api.P2PoolAPI(api)
 
 print(x._local_stratum)         # Print entire reponse
 print(x.local_p2p_uptime)       # Print property representing individual data from the API
-x.get_stats_mod()               # Update individual endpoints
+x.get_stats_mod()               # Update individual `stats_mod` endpoint
 x.get_all_data()                # Update all endpoints at once
 ```
