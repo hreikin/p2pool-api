@@ -1,10 +1,13 @@
-import p2pool_api
+import p2pool_api, logging
 
-api = "/path/to/p2pool/api"
+logging.basicConfig()
+logging.getLogger("P2PoolAPI").setLevel(logging.INFO)           # Change to DEBUG to print out all responses when their methods are called
+log = logging.getLogger("MyLOG")
 
-x = p2pool_api.P2PoolAPI(api)
+api_path = "/path/to/p2pool/api"
+x = p2pool_api.P2PoolAPI(api_path)
 
-print(x._local_stratum)         # Print entire reponse
-print(x.local_p2p_uptime)       # Print property representing individual data from the API
-x.get_stats_mod()               # Update individual `stats_mod` endpoint
-x.get_all_data()                # Update all endpoints at once
+log.info(x._local_stratum)                                      # Log entire reponse
+log.info(x.local_p2p_uptime)                                    # Log property representing individual data from the API
+x.get_stats_mod()                                               # Update individual `stats_mod` endpoint
+x.get_all_data()                                                # Update all endpoints at once
