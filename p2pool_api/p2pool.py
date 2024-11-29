@@ -4,8 +4,9 @@ P2Pool API interaction library.
 This module provides the `P2PoolAPI` class for interacting with various data sources in a P2Pool miner API.
 """
 
-import json
+import json, logging
 
+log = logging.getLogger("P2PoolAPI")
 
 class P2PoolAPI:
     """
@@ -182,6 +183,7 @@ class P2PoolAPI:
         try:
             return self._local_console
         except Exception as e:
+            log.error(f"An error occurred fetching the `local_console` data: {e}")
             return False
 
     @property
@@ -195,6 +197,7 @@ class P2PoolAPI:
         try:
             return self._local_p2p
         except Exception as e:
+            log.error(f"An error occurred fetching the `local_p2p` data: {e}")
             return False
 
     @property
@@ -208,6 +211,7 @@ class P2PoolAPI:
         try:
             return self._local_stratum
         except Exception as e:
+            log.error(f"An error occurred fetching the `local_stratum` data: {e}")
             return False
 
     @property
@@ -221,6 +225,7 @@ class P2PoolAPI:
         try:
             return self._network_stats
         except Exception as e:
+            log.error(f"An error occurred fetching the `network_stats` data: {e}")
             return False
 
     @property
@@ -234,6 +239,7 @@ class P2PoolAPI:
         try:
             return self._pool_blocks
         except Exception as e:
+            log.error(f"An error occurred fetching the `pool_blocks` data: {e}")
             return False
 
     @property
@@ -247,6 +253,7 @@ class P2PoolAPI:
         try:
             return self._pool_stats
         except Exception as e:
+            log.error(f"An error occurred fetching the `pool_stats` data: {e}")
             return False
 
     @property
@@ -260,6 +267,7 @@ class P2PoolAPI:
         try:
             return self._stats_mod
         except Exception as e:
+            log.error(f"An error occurred fetching the `stats_mod` data: {e}")
             return False
     
     @property
@@ -273,7 +281,7 @@ class P2PoolAPI:
         try:
             return self._local_console["mode"]
         except Exception as e:
-            print(f"An error occurred fetching the `mode` data: {e}")
+            log.error(f"An error occurred fetching the `mode` data: {e}")
             return False
     
     @property
@@ -287,7 +295,7 @@ class P2PoolAPI:
         try:
             return self._local_console["tcp_port"]
         except Exception as e:
-            print(f"An error occurred fetching the `tcp_port` data: {e}")
+            log.error(f"An error occurred fetching the `tcp_port` data: {e}")
             return False
     
     @property
@@ -301,7 +309,7 @@ class P2PoolAPI:
         try:
             return self._local_p2p["connections"]
         except Exception as e:
-            print(f"An error occurred fetching the `connections` data: {e}")
+            log.error(f"An error occurred fetching the `connections` data: {e}")
             return False
     
     @property
@@ -315,7 +323,7 @@ class P2PoolAPI:
         try:
             return self._local_p2p["incoming_connections"]
         except Exception as e:
-            print(f"An error occurred fetching the `incoming_connections` data: {e}")
+            log.error(f"An error occurred fetching the `incoming_connections` data: {e}")
             return False
     
     @property
@@ -329,7 +337,7 @@ class P2PoolAPI:
         try:
             return self._local_p2p["peer_list_size"]
         except Exception as e:
-            print(f"An error occurred fetching the `peer_list_size` data: {e}")
+            log.error(f"An error occurred fetching the `peer_list_size` data: {e}")
             return False
     
     @property
@@ -343,7 +351,7 @@ class P2PoolAPI:
         try:
             return self._local_p2p["peers"]
         except Exception as e:
-            print(f"An error occurred fetching the `peers` data: {e}")
+            log.error(f"An error occurred fetching the `peers` data: {e}")
             return False
     
     @property
@@ -357,7 +365,7 @@ class P2PoolAPI:
         try:
             return self._local_p2p["uptime"]
         except Exception as e:
-            print(f"An error occurred fetching the `uptime` data: {e}")
+            log.error(f"An error occurred fetching the `uptime` data: {e}")
             return False
     
     @property
@@ -371,7 +379,7 @@ class P2PoolAPI:
         try:
             return self._local_stratum["hashrate_15m"]
         except Exception as e:
-            print(f"An error occurred fetching the `hashrate_15m` data: {e}")
+            log.error(f"An error occurred fetching the `hashrate_15m` data: {e}")
             return False
     
     @property
@@ -385,7 +393,7 @@ class P2PoolAPI:
         try:
             return self._local_stratum["hashrate_1h"]
         except Exception as e:
-            print(f"An error occurred fetching the `hashrate_1h` data: {e}")
+            log.error(f"An error occurred fetching the `hashrate_1h` data: {e}")
             return False
     
     @property
@@ -399,7 +407,7 @@ class P2PoolAPI:
         try:
             return self._local_stratum["hashrate_24h"]
         except Exception as e:
-            print(f"An error occurred fetching the `hashrate_24h` data: {e}")
+            log.error(f"An error occurred fetching the `hashrate_24h` data: {e}")
             return False
     
     @property
@@ -413,7 +421,7 @@ class P2PoolAPI:
         try:
             return self._local_stratum["total_hashes"]
         except Exception as e:
-            print(f"An error occurred fetching the `total_hashes` data: {e}")
+            log.error(f"An error occurred fetching the `total_hashes` data: {e}")
             return False
     
     @property
@@ -427,7 +435,7 @@ class P2PoolAPI:
         try:
             return self._local_stratum["shares_found"]
         except Exception as e:
-            print(f"An error occurred fetching the `shares_found` data: {e}")
+            log.error(f"An error occurred fetching the `shares_found` data: {e}")
             return False
     
     @property
@@ -441,7 +449,7 @@ class P2PoolAPI:
         try:
             return self._local_stratum["shares_failed"]
         except Exception as e:
-            print(f"An error occurred fetching the `shares_failed` data: {e}")
+            log.error(f"An error occurred fetching the `shares_failed` data: {e}")
             return False
     
     @property
@@ -455,7 +463,7 @@ class P2PoolAPI:
         try:
             return self._local_stratum["average_effort"]
         except Exception as e:
-            print(f"An error occurred fetching the `average_effort` data: {e}")
+            log.error(f"An error occurred fetching the `average_effort` data: {e}")
             return False
     
     @property
@@ -469,7 +477,7 @@ class P2PoolAPI:
         try:
             return self._local_stratum["current_effort"]
         except Exception as e:
-            print(f"An error occurred fetching the `current_effort` data: {e}")
+            log.error(f"An error occurred fetching the `current_effort` data: {e}")
             return False
     
     @property
@@ -483,7 +491,7 @@ class P2PoolAPI:
         try:
             return self._local_stratum["connections"]
         except Exception as e:
-            print(f"An error occurred fetching the `connections` data: {e}")
+            log.error(f"An error occurred fetching the `connections` data: {e}")
             return False
     
     @property
@@ -497,7 +505,7 @@ class P2PoolAPI:
         try:
             return self._local_stratum["incoming_connections"]
         except Exception as e:
-            print(f"An error occurred fetching the `incoming_connections` data: {e}")
+            log.error(f"An error occurred fetching the `incoming_connections` data: {e}")
             return False
     
     @property
@@ -511,7 +519,7 @@ class P2PoolAPI:
         try:
             return self._local_stratum["block_reward_share_percent"]
         except Exception as e:
-            print(f"An error occurred fetching the `block_reward_share_percent` data: {e}")
+            log.error(f"An error occurred fetching the `block_reward_share_percent` data: {e}")
             return False
     
     @property
@@ -528,9 +536,9 @@ class P2PoolAPI:
             return self._workers
         except Exception as e:
             if default != "default":
-                print(f"An error occurred fetching the `workers_full` data: {e}")
+                log.error(f"An error occurred fetching the `workers_full` data: {e}")
             else:
-                print(f"An error occurred fetching the `workers` data: {e}")
+                log.error(f"An error occurred fetching the `workers` data: {e}")
             return False
     
     @property
@@ -544,7 +552,7 @@ class P2PoolAPI:
         try:
             return self._network_stats["difficulty"]
         except Exception as e:
-            print(f"An error occurred fetching the `difficulty` data: {e}")
+            log.error(f"An error occurred fetching the `difficulty` data: {e}")
             return False
     
     @property
@@ -559,7 +567,7 @@ class P2PoolAPI:
         try:
             return self._network_stats["hash"]
         except Exception as e:
-            print(f"An error occurred fetching the `hash` data: {e}")
+            log.error(f"An error occurred fetching the `hash` data: {e}")
             return False
     
     @property
@@ -573,7 +581,7 @@ class P2PoolAPI:
         try:
             return self._network_stats["height"]
         except Exception as e:
-            print(f"An error occurred fetching the `height` data: {e}")
+            log.error(f"An error occurred fetching the `height` data: {e}")
             return False
     
     @property
@@ -587,7 +595,7 @@ class P2PoolAPI:
         try:
             return self._network_stats["reward"]
         except Exception as e:
-            print(f"An error occurred fetching the `reward` data: {e}")
+            log.error(f"An error occurred fetching the `reward` data: {e}")
             return False
     
     @property
@@ -601,7 +609,7 @@ class P2PoolAPI:
         try:
             return self._network_stats["timestamp"]
         except Exception as e:
-            print(f"An error occurred fetching the `timestamp` data: {e}")
+            log.error(f"An error occurred fetching the `timestamp` data: {e}")
             return False
     
     @property
@@ -618,7 +626,7 @@ class P2PoolAPI:
                 heights.append(self._pool_blocks[i]["height"])
             return heights
         except Exception as e:
-            print(f"An error occurred fetching the `heights` data: {e}")
+            log.error(f"An error occurred fetching the `heights` data: {e}")
             return False
     
     @property
@@ -635,7 +643,7 @@ class P2PoolAPI:
                 hashes.append(self._pool_blocks[i]["hash"])
             return hashes
         except Exception as e:
-            print(f"An error occurred fetching the `hashes` data: {e}")
+            log.error(f"An error occurred fetching the `hashes` data: {e}")
             return False
     
     @property
@@ -652,7 +660,7 @@ class P2PoolAPI:
                 difficulties.append(self._pool_blocks[i]["difficulty"])
             return difficulties
         except Exception as e:
-            print(f"An error occurred fetching the `difficulties` data: {e}")
+            log.error(f"An error occurred fetching the `difficulties` data: {e}")
             return False
     
     @property
@@ -669,7 +677,7 @@ class P2PoolAPI:
                 total_hashes.append(self._pool_blocks[i]["totalHashes"])
             return total_hashes
         except Exception as e:
-            print(f"An error occurred fetching the `total_hashes` data: {e}")
+            log.error(f"An error occurred fetching the `total_hashes` data: {e}")
             return False
     
     @property
@@ -686,7 +694,7 @@ class P2PoolAPI:
                 timestamps.append(self._pool_blocks[i]["ts"])
             return timestamps
         except Exception as e:
-            print(f"An error occurred fetching the `timestamps` data: {e}")
+            log.error(f"An error occurred fetching the `timestamps` data: {e}")
             return False
     
     @property
@@ -700,7 +708,7 @@ class P2PoolAPI:
         try:
             return self._pool_stats["pool_list"][0]
         except Exception as e:
-            print(f"An error occurred fetching the `payout_type` data: {e}")
+            log.error(f"An error occurred fetching the `payout_type` data: {e}")
             return False
     
     @property
@@ -714,7 +722,7 @@ class P2PoolAPI:
         try:
             return self._pool_stats["pool_statistics"]["hashRate"]
         except Exception as e:
-            print(f"An error occurred fetching the `hash_rate` data: {e}")
+            log.error(f"An error occurred fetching the `hash_rate` data: {e}")
             return False
     
     @property
@@ -728,7 +736,7 @@ class P2PoolAPI:
         try:
             return self._pool_stats["pool_statistics"]["miners"]
         except Exception as e:
-            print(f"An error occurred fetching the `miners` data: {e}")
+            log.error(f"An error occurred fetching the `miners` data: {e}")
             return False
     
     @property
@@ -742,7 +750,7 @@ class P2PoolAPI:
         try:
             return self._pool_stats["pool_statistics"]["totalHashes"]
         except Exception as e:
-            print(f"An error occurred fetching the `total_hashes` data: {e}")
+            log.error(f"An error occurred fetching the `total_hashes` data: {e}")
             return False
     
     @property
@@ -756,7 +764,7 @@ class P2PoolAPI:
         try:
             return self._pool_stats["pool_statistics"]["lastBlockFoundTime"]
         except Exception as e:
-            print(f"An error occurred fetching the `last_block_found_time` data: {e}")
+            log.error(f"An error occurred fetching the `last_block_found_time` data: {e}")
             return False
     
     @property
@@ -770,7 +778,7 @@ class P2PoolAPI:
         try:
             return self._pool_stats["pool_statistics"]["lastBlockFound"]
         except Exception as e:
-            print(f"An error occurred fetching the `last_block_found` data: {e}")
+            log.error(f"An error occurred fetching the `last_block_found` data: {e}")
             return False
     
     @property
@@ -784,7 +792,7 @@ class P2PoolAPI:
         try:
             return self._pool_stats["pool_statistics"]["totalBlocksFound"]
         except Exception as e:
-            print(f"An error occurred fetching the `total_blocks_found` data: {e}")
+            log.error(f"An error occurred fetching the `total_blocks_found` data: {e}")
             return False
     
     @property
@@ -798,7 +806,7 @@ class P2PoolAPI:
         try:
             return self._pool_stats["pool_statistics"]["pplnsWeight"]
         except Exception as e:
-            print(f"An error occurred fetching the `pplns_weight` data: {e}")
+            log.error(f"An error occurred fetching the `pplns_weight` data: {e}")
             return False
     
     @property
@@ -812,7 +820,7 @@ class P2PoolAPI:
         try:
             return self._pool_stats["pool_statistics"]["pplnsWindowSize"]
         except Exception as e:
-            print(f"An error occurred fetching the `pplns_window_size` data: {e}")
+            log.error(f"An error occurred fetching the `pplns_window_size` data: {e}")
             return False
     
     @property
@@ -827,7 +835,7 @@ class P2PoolAPI:
         try:
             return self._pool_stats["pool_statistics"]["sidechainDifficulty"]
         except Exception as e:
-            print(f"An error occurred fetching the `sidechain_difficulty` data: {e}")
+            log.error(f"An error occurred fetching the `sidechain_difficulty` data: {e}")
             return False
     
     @property
@@ -841,7 +849,7 @@ class P2PoolAPI:
         try:
             return self._pool_stats["pool_statistics"]["sidechainHeight"]
         except Exception as e:
-            print(f"An error occurred fetching the `sidechain_height` data: {e}")
+            log.error(f"An error occurred fetching the `sidechain_height` data: {e}")
             return False
     
     @property
@@ -855,7 +863,7 @@ class P2PoolAPI:
         try:
             return self._stats_mod["config"]
         except Exception as e:
-            print(f"An error occurred fetching the `config` data: {e}")
+            log.error(f"An error occurred fetching the `config` data: {e}")
             return False
     
     @property
@@ -872,7 +880,7 @@ class P2PoolAPI:
                 ports.append(i["port"])
             return ports
         except Exception as e:
-            print(f"An error occurred fetching the `ports` data: {e}")
+            log.error(f"An error occurred fetching the `ports` data: {e}")
             return False
     
     @property
@@ -889,7 +897,7 @@ class P2PoolAPI:
                 tls.append(i["port"])
             return tls
         except Exception as e:
-            print(f"An error occurred fetching the `tls` data: {e}")
+            log.error(f"An error occurred fetching the `tls` data: {e}")
             return False
     
     @property
@@ -903,7 +911,7 @@ class P2PoolAPI:
         try:
             return self._stats_mod["config"]["fee"]
         except Exception as e:
-            print(f"An error occurred fetching the `fee` data: {e}")
+            log.error(f"An error occurred fetching the `fee` data: {e}")
             return False
     
     @property
@@ -917,7 +925,7 @@ class P2PoolAPI:
         try:
             return self._stats_mod["config"]["minPaymentThreshold"]
         except Exception as e:
-            print(f"An error occurred fetching the `min_payment_threshold` data: {e}")
+            log.error(f"An error occurred fetching the `min_payment_threshold` data: {e}")
             return False
     
     @property
@@ -931,7 +939,7 @@ class P2PoolAPI:
         try:
             return self._stats_mod["config"]["network"]["height"]
         except Exception as e:
-            print(f"An error occurred fetching the `network_height` data: {e}")
+            log.error(f"An error occurred fetching the `network_height` data: {e}")
             return False
     
     @property
@@ -945,7 +953,7 @@ class P2PoolAPI:
         try:
             return self._stats_mod["config"]["pool"]["stats"]["lastBlockFound"]
         except Exception as e:
-            print(f"An error occurred fetching the `last_block_found` data: {e}")
+            log.error(f"An error occurred fetching the `last_block_found` data: {e}")
             return False
     
     @property
@@ -959,7 +967,7 @@ class P2PoolAPI:
         try:
             return self._stats_mod["config"]["pool"]["stats"]["blocks"]
         except Exception as e:
-            print(f"An error occurred fetching the `blocks` data: {e}")
+            log.error(f"An error occurred fetching the `blocks` data: {e}")
             return False
     
     @property
@@ -973,7 +981,7 @@ class P2PoolAPI:
         try:
             return self._stats_mod["config"]["pool"]["stats"]["miners"]
         except Exception as e:
-            print(f"An error occurred fetching the `miners` data: {e}")
+            log.error(f"An error occurred fetching the `miners` data: {e}")
             return False
     
     @property
@@ -987,7 +995,7 @@ class P2PoolAPI:
         try:
             return self._stats_mod["config"]["pool"]["stats"]["hashrate"]
         except Exception as e:
-            print(f"An error occurred fetching the `hashrate` data: {e}")
+            log.error(f"An error occurred fetching the `hashrate` data: {e}")
             return False
     
     @property
@@ -1001,5 +1009,5 @@ class P2PoolAPI:
         try:
             return self._stats_mod["config"]["pool"]["stats"]["roundHashes"]
         except Exception as e:
-            print(f"An error occurred fetching the `round_hashes` data: {e}")
+            log.error(f"An error occurred fetching the `round_hashes` data: {e}")
             return False
