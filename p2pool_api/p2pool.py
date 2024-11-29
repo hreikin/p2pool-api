@@ -179,7 +179,10 @@ class P2PoolAPI:
         Returns:
             dict |: The data from the `local/console` endpoint, False otherwise
         """
-        return self._local_console
+        try:
+            return self._local_console
+        except Exception as e:
+            return False
 
     @property
     def local_p2p(self) -> dict | bool:
@@ -189,7 +192,10 @@ class P2PoolAPI:
         Returns:
             dict |: The data from the `local/p2p` endpoint, False otherwise
         """
-        return self._local_p2p
+        try:
+            return self._local_p2p
+        except Exception as e:
+            return False
 
     @property
     def local_stratum(self) -> dict | bool:
@@ -199,7 +205,10 @@ class P2PoolAPI:
         Returns:
             dict |: The data from the `local/stratum` endpoint, False otherwise
         """
-        return self._local_stratum
+        try:
+            return self._local_stratum
+        except Exception as e:
+            return False
 
     @property
     def network_stats(self) -> dict | bool:
@@ -209,7 +218,10 @@ class P2PoolAPI:
         Returns:
             dict |: The data from the `network/stats` endpoint, False otherwise
         """
-        return self._network_stats
+        try:
+            return self._network_stats
+        except Exception as e:
+            return False
 
     @property
     def pool_blocks(self) -> dict | bool:
@@ -219,7 +231,10 @@ class P2PoolAPI:
         Returns:
             dict |: The data from the `pool/blocks` endpoint, False otherwise
         """
-        return self._pool_blocks
+        try:
+            return self._pool_blocks
+        except Exception as e:
+            return False
 
     @property
     def pool_stats(self) -> dict | bool:
@@ -229,7 +244,10 @@ class P2PoolAPI:
         Returns:
             dict |: The data from the `pool/stats` endpoint, False otherwise
         """
-        return self._pool_stats
+        try:
+            return self._pool_stats
+        except Exception as e:
+            return False
 
     @property
     def stats_mod(self) -> dict | bool:
@@ -239,7 +257,10 @@ class P2PoolAPI:
         Returns:
             dict |: The data from the `stats_mod` endpoint, False otherwise
         """
-        return self._stats_mod
+        try:
+            return self._stats_mod
+        except Exception as e:
+            return False
     
     @property
     def local_console_mode(self) -> str | bool:
