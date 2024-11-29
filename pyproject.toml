@@ -16,3 +16,7 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/hreikin/p2pool-api"
 Issues = "https://github.com/hreikin/p2pool-api/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
