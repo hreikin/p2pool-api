@@ -6,7 +6,6 @@ copyright: MIT License
 theme:
   name: material
   palette:
-    # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
       primary: black
       accent: deep orange
@@ -14,14 +13,13 @@ theme:
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-    # Palette toggle for dark mode
     - media: "(prefers-color-scheme: dark)"
       primary: black
       accent: deep orange
       scheme: slate
       toggle:
         icon: material/brightness-4
-        name: Switch to system preference
+        name: Switch to light mode
   features:
     - navigation.instant
     - navigation.instant.prefetch
