@@ -1,6 +1,6 @@
 [project]
 name = "p2pool-api"
-version = "0.0.2"
+version = "0.0.3"
 authors = [
   { name="hreikin", email="hreikin@gmail.com" },
 ]
@@ -16,6 +16,12 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/hreikin/p2pool-api"
 Issues = "https://github.com/hreikin/p2pool-api/issues"
+
+[project]
+dependencies = [
+  "mkdocs-material",
+  "mkdocstrings['python']",
+]
 
 [build-system]
 requires = ["hatchling"]
