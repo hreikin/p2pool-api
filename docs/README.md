@@ -41,6 +41,37 @@ git checkout -b foobar
 - After making modifications, commit and push your changes to your topic branch
 - Open a PR against the p2pool-api main branch
 
+## Run the documentation server locally
+
+This documentation can be built and run locally.
+
+- The build process for mkdocs utilizes Python
+- It is recommended to install python pip dependencies inside of a Virtual Environment [(venv)](https://squidfunk.github.io/mkdocs-material/guides/creating-a-reproduction/#environment)
+
+Note: You may need to first install `python3-venv` or the equivalent for your distribution
+
+- Navigate to your `p2pool-api` repo
+- Create the python virtual environment
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+- Install mkdocs dependencies to the venv
+
+```bash
+pip install -r requirements.txt
+```
+
+- Run the documentation server locally
+
+```bash
+mkdocs serve
+```
+
+- View your changes at [http://localhost:8000](http://localhost:8000)
+
 ## Donations
 
 If you'd like to support further development of P2PoolAPI, you're welcome to send any amount of XMR to the following address:
