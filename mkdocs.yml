@@ -30,6 +30,7 @@ nav:
   - "Home": "README.md"
   - "Usage": "usage.md"
   - "Reference": "reference.md"
+  - "Contributing": "CONTRIBUTING.md"
 
 plugins:
   - search
