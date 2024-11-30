@@ -4,7 +4,7 @@
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/p2pool-api?label=PyPI%20Downloads)
 ![License](https://img.shields.io/github/license/hreikin/p2pool-api?label=License&color=green)
 
-This module provides the `P2PoolAPI` object to allow interacting with the P2Pool API.
+This module provides the `P2PoolAPI` object to allow interacting with the P2Pool API. Documentation is available [here](https://hreikin.co.uk/p2pool-api/).
 
 ## Getting Started
 
