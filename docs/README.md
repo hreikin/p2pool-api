@@ -12,6 +12,35 @@ A quick overview of how to install and use this module can be found on the [Usag
 
 ## Contributing
 
+Contributions are both encouraged and greatly appreciated.
+
+To contribute content, fork this repo and make a pull request to the master branch including your changes.
+
+- On GitHub, fork the p2pool-api repo
+- Clone your newly created repo. (Note: replace your-username with your GitHub username)
+
+via ssh:
+
+```
+git clone git@github.com:your-username/p2pool-api
+```
+
+via https:
+
+```
+git clone https://github.com/your-username/p2pool-api
+```
+
+- Navigate to the repo and create a new topic branch
+
+```
+cd p2pool-api
+git checkout -b foobar
+```
+
+- After making modifications, commit and push your changes to your topic branch
+- Open a PR against the p2pool-api main branch
+
 ## Donations
 
 If you'd like to support further development of P2PoolAPI, you're welcome to send any amount of XMR to the following address:
