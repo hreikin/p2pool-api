@@ -1,0 +1,32 @@
+site_name: P2Pool-API
+site_url: https://hreikin.github.io/p2pool-api
+repo_name: hreikin/p2pool-api
+repo_url: https://github.com/hreikin/p2pool-api
+copyright: MIT License
+theme:
+  name: material
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  features:
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+nav:
+  - "Home": "README.md"
+  - "Usage": "usage.md"
+  - "Reference": "reference.md"
+
+plugins:
+  - search
+  - mkdocstrings
