@@ -5,8 +5,9 @@ This module provides the `P2PoolAPI` class for interacting with various data sou
 """
 
 import json, logging
+from pathlib import Path
 
-log = logging.getLogger("P2PoolAPI")
+log = logging.getLogger("p2pool.api")
 
 class P2PoolAPI:
     """
@@ -29,7 +30,7 @@ class P2PoolAPI:
         Args:
             api_path (str): The base path to the API data directory.
         """
-        self._api_path = api_path
+        self._api_path = Path(api_path).resolve()
         self._local_console = {}
         self._local_p2p = {}
         self._local_stratum = {}
@@ -1070,3 +1071,6 @@ class P2PoolAPI:
         except Exception as e:
             log.error(f"An error occurred fetching the `round_hashes` data: {e}")
             return False
+
+# Define the public interface of the module
+__all__ = ["P2PoolAPI"]
