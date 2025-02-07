@@ -34,6 +34,7 @@ class P2PoolAPI:
         """
         if not self._validate_api_path(api_path, is_remote):
             raise ValueError("Invalid API path provided.")
+        
         self._api_path = Path(api_path).resolve() if not is_remote else api_path
         self._is_remote = is_remote
         self._local_console = {}
@@ -84,8 +85,11 @@ class P2PoolAPI:
             else:
                 with open(f"{self._api_path}/{endpoint}", "r") as reader:
                     return json.loads(reader.read())
-        except Exception as e:
+        except requests.exceptions.RequestException as e:
             log.error(f"An error occurred fetching data from `{endpoint}`: {e}")
+            return False
+        except (OSError, json.JSONDecodeError) as e:
+            log.error(f"An error occurred reading data from `{endpoint}`: {e}")
             return False
 
     def get_local_console(self) -> bool:
