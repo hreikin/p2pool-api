@@ -140,7 +140,7 @@ class P2PoolAPI:
             return True
         return False
     
-    def get_local_console(self) -> bool:
+    def update_local_console(self) -> bool:
         """
         Retrieve the data from local console endpoint.
 
@@ -152,7 +152,7 @@ class P2PoolAPI:
         """
         return self._get_endpoint("local/console")
 
-    def get_local_p2p(self) -> bool:
+    def update_local_p2p(self) -> bool:
         """
         Retrieve the data from local P2P endpoint.
         
@@ -164,7 +164,7 @@ class P2PoolAPI:
         """
         return self._get_endpoint("local/p2p")
 
-    def get_local_stratum(self) -> bool:
+    def update_local_stratum(self) -> bool:
         """
         Retrieve the data from local stratum endpoint.
 
@@ -176,7 +176,7 @@ class P2PoolAPI:
         """
         return self._get_endpoint("local/stratum")
 
-    def get_network_stats(self) -> bool:
+    def update_network_stats(self) -> bool:
         """
         Retrieve the data from network stats endpoint.
         
@@ -188,7 +188,7 @@ class P2PoolAPI:
         """
         return self._get_endpoint("network/stats")
 
-    def get_pool_blocks(self) -> bool:
+    def update_pool_blocks(self) -> bool:
         """
         Retrieve the data from pool blocks endpoint.
         
@@ -200,7 +200,7 @@ class P2PoolAPI:
         """
         return self._get_endpoint("pool/blocks")
 
-    def get_pool_stats(self) -> bool:
+    def update_pool_stats(self) -> bool:
         """
         Retrieve the data from pool stats endpoint.
 
@@ -212,7 +212,7 @@ class P2PoolAPI:
         """
         return self._get_endpoint("pool/stats")
 
-    def get_stats_mod(self) -> bool:
+    def update_stats_mod(self) -> bool:
         """
         Retrieve the data from stats mod endpoint.
 
@@ -224,7 +224,7 @@ class P2PoolAPI:
         """
         return self._get_endpoint("stats_mod")
 
-    def get_all_endpoints(self) -> bool:
+    def update_all_endpoints(self) -> bool:
         """
         Fetches and processes data from all API endpoints.
 
@@ -232,18 +232,18 @@ class P2PoolAPI:
             bool: True if all data sources were successfully fetched, False otherwise.
         """
         try:
-            get_local_console_success = self.get_local_console()
-            get_local_p2p_success = self.get_local_p2p()
-            get_local_stratum_success = self.get_local_stratum()
-            get_network_stats_success = self.get_network_stats()
-            get_pool_blocks_success = self.get_pool_blocks()
-            get_pool_stats_success = self.get_pool_stats()
-            get_stats_mod_success = self.get_stats_mod()
-            if all([get_local_console_success, get_local_p2p_success, get_local_stratum_success, get_network_stats_success, get_pool_blocks_success, get_pool_stats_success, get_stats_mod_success]):
+            update_local_console_success = self.update_local_console()
+            update_local_p2p_success = self.update_local_p2p()
+            update_local_stratum_success = self.update_local_stratum()
+            update_network_stats_success = self.update_network_stats()
+            update_pool_blocks_success = self.update_pool_blocks()
+            update_pool_stats_success = self.update_pool_stats()
+            update_stats_mod_success = self.update_stats_mod()
+            if all([update_local_console_success, update_local_p2p_success, update_local_stratum_success, update_network_stats_success, update_pool_blocks_success, update_pool_stats_success, update_stats_mod_success]):
                 log.info("All data fetched successfully.")
                 return True
             log.error("An error occurred fetching some of the latest data, one or more endpoints failed.")
-            log.error(f"get_local_console: {get_local_console_success},\nget_local_p2p: {get_local_p2p_success},\nget_local_stratum: {get_local_stratum_success},\nget_network_stats: {get_network_stats_success},\nget_pool_blocks: {get_pool_blocks_success},\nget_pool_stats: {get_pool_stats_success},\nget_stats_mod: {get_stats_mod_success}")
+            log.error(f"update_local_console: {update_local_console_success},\nupdate_local_p2p: {update_local_p2p_success},\nupdate_local_stratum: {update_local_stratum_success},\nupdate_network_stats: {update_network_stats_success},\nupdate_pool_blocks: {update_pool_blocks_success},\nupdate_pool_stats: {update_pool_stats_success},\nupdate_stats_mod: {update_stats_mod_success}")
             return False
         except Exception as e:
             raise P2PoolAPIError(e, traceback.format_exc(), f"An error occurred fetching the latest data: {e}") from e
