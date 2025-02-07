@@ -1,0 +1,27 @@
+{
+    "config": {
+        "ports": [
+            {
+                "port": 3333,
+                "tls": false
+            }
+        ],
+        "fee": 0,
+        "minPaymentThreshold": 300000000
+    },
+    "network": {
+        "height": 3342586
+    },
+    "pool": {
+        "stats": {
+            "lastBlockFound": "1738945363000"
+        },
+        "blocks": [
+            "a69b...f133:1738945363",
+            "3342543"
+        ],
+        "miners": 1587,
+        "hashrate": 17723081,
+        "roundHashes": 72017498657
+    }
+}

@@ -1,0 +1,359 @@
+[
+    {
+        "height": 3342543,
+        "hash": "a69b17b703b3987e758daf1740e620b56f52c8832ccc5f5ae6487b7f6e89f133",
+        "difficulty": 479248644548,
+        "totalHashes": 1223001183570723,
+        "ts": 1738945363
+    },
+    {
+        "height": 3342019,
+        "hash": "2d0ee9e27f7ae5a69f519d37242c260abe86cc264d9e110797d34ef2e4e1f42f",
+        "difficulty": 471876229336,
+        "totalHashes": 1221984298441455,
+        "ts": 1738886710
+    },
+    {
+        "height": 3341883,
+        "hash": "4a01b3d1e6f1975062cdf791fe248a6fc574706638f4bb59678589f5df29518f",
+        "difficulty": 461749623245,
+        "totalHashes": 1221701792894747,
+        "ts": 1738869067
+    },
+    {
+        "height": 3341317,
+        "hash": "864d91b61e9c0b3eb77cfd139371a3cf2f5c91962ae5648071acb79794273cd7",
+        "difficulty": 451272397340,
+        "totalHashes": 1220592101916735,
+        "ts": 1738805737
+    },
+    {
+        "height": 3341274,
+        "hash": "a3d0e8850043172de1efb7ac138e1476c804841bad5ac20c5385f42946feb7ca",
+        "difficulty": 455496911607,
+        "totalHashes": 1220490903336844,
+        "ts": 1738799860
+    },
+    {
+        "height": 3340403,
+        "hash": "48eefeb3e96236841a23ca5f9cfa4b253749ed0853c45ead93a75d535859c3ab",
+        "difficulty": 441097378777,
+        "totalHashes": 1218733690620277,
+        "ts": 1738694734
+    },
+    {
+        "height": 3340198,
+        "hash": "b718b5a24920cbb467d875342e9fa4b8e0dbe7cbc31eeead05767d235c1a1290",
+        "difficulty": 471942015077,
+        "totalHashes": 1218326680285475,
+        "ts": 1738670400
+    },
+    {
+        "height": 3340115,
+        "hash": "e4b36813cc7a17b1b01f21fc87efe0da858cdca94abcbfc8ebd1f7573a6a99da",
+        "difficulty": 471134342480,
+        "totalHashes": 1218157457591583,
+        "ts": 1738660067
+    },
+    {
+        "height": 3339271,
+        "hash": "769ebebe3eb794848dbb71c77966f920c98b0fb0e715a430d2db9257deb3cb7d",
+        "difficulty": 495074163086,
+        "totalHashes": 1216420719999351,
+        "ts": 1738557237
+    },
+    {
+        "height": 3339066,
+        "hash": "7e0d179a5fddd060f76524b6e00c9bed330f2a44f79522ecb5b05b74c02660ae",
+        "difficulty": 491069507296,
+        "totalHashes": 1215943802887083,
+        "ts": 1738529928
+    },
+    {
+        "height": 3338822,
+        "hash": "e2512093b7adc5674f749c5caaaf46c4f789b0bb3d38daffdca4457ccdd215bc",
+        "difficulty": 477095496951,
+        "totalHashes": 1215405570329841,
+        "ts": 1738500110
+    },
+    {
+        "height": 3338682,
+        "hash": "261f287ce7fe8cb177656a37726793c550603ecb86c1289a11ad498006b5c012",
+        "difficulty": 460391428155,
+        "totalHashes": 1215153896517604,
+        "ts": 1738485885
+    },
+    {
+        "height": 3338419,
+        "hash": "4f7da133f92b0c81d964f238f0ef07c97709c75232b2b40bcf6fb5b3bd533f15",
+        "difficulty": 464102760625,
+        "totalHashes": 1214603634738737,
+        "ts": 1738453359
+    },
+    {
+        "height": 3338352,
+        "hash": "2d94d8e53434018430bed43068f6e4aaa2cd42b89b114e65d5851cfa0d65b0f9",
+        "difficulty": 461277069301,
+        "totalHashes": 1214474801648402,
+        "ts": 1738445727
+    },
+    {
+        "height": 3338332,
+        "hash": "fb09dafa90cb8048edcbccefb4450ad932d928b78299fdc8432cab9ab3288d5a",
+        "difficulty": 456983634030,
+        "totalHashes": 1214444346076924,
+        "ts": 1738444041
+    },
+    {
+        "height": 3338153,
+        "hash": "e8b15825ad62b3cf8bc8d28f50d64c14b935cdd252fa81f834afcedc9f828860",
+        "difficulty": 473452254252,
+        "totalHashes": 1214067677707869,
+        "ts": 1738423346
+    },
+    {
+        "height": 3337940,
+        "hash": "a00292fa7ed65c9fe3ac6db2229184ad9dd88eef7494752b8fa2ad73dcd0438b",
+        "difficulty": 499630332306,
+        "totalHashes": 1213591803097858,
+        "ts": 1738396479
+    },
+    {
+        "height": 3337867,
+        "hash": "0c6dbd8f6fee2e566700d5033cf32e01ecd448e1861346ee8638d1e024201ae8",
+        "difficulty": 494178479886,
+        "totalHashes": 1213409798242889,
+        "ts": 1738386090
+    },
+    {
+        "height": 3337653,
+        "hash": "26875000e1fe4631a0c142548e0aa2e458878ec52825e38de8bdf6e61e9385c6",
+        "difficulty": 505705059982,
+        "totalHashes": 1212899272318291,
+        "ts": 1738357340
+    },
+    {
+        "height": 3337619,
+        "hash": "8a6795a8ae72eb705cd6a9bf39367a794089f4807d88624055c3ebd1372107cc",
+        "difficulty": 491678734608,
+        "totalHashes": 1212821192033867,
+        "ts": 1738353034
+    },
+    {
+        "height": 3337238,
+        "hash": "eff78c98d193aeaeeb2df736f8dafefd59b3f094f02e9c96c84b45c9be0cd4ea",
+        "difficulty": 459998421889,
+        "totalHashes": 1212132781265874,
+        "ts": 1738312513
+    },
+    {
+        "height": 3336828,
+        "hash": "da3fe9e67bcff77d7c0ee84448f43f99bfd3308a3a23abac67f01cd95c159256",
+        "difficulty": 462001316131,
+        "totalHashes": 1211247080291906,
+        "ts": 1738261969
+    },
+    {
+        "height": 3335881,
+        "hash": "6227a6bd535a43d2714104420f05b8b1ed56cf2db45f729ad232a26c9976c8e9",
+        "difficulty": 475883920088,
+        "totalHashes": 1209264485867164,
+        "ts": 1738147997
+    },
+    {
+        "height": 3335847,
+        "hash": "742895ce23094a7e169078830ee930c74c6cc290547607a32ea2b5a00a99c3fb",
+        "difficulty": 489547833697,
+        "totalHashes": 1209192776210396,
+        "ts": 1738143625
+    },
+    {
+        "height": 3335837,
+        "hash": "f45d5e93257e45743d336c36ad2a08a6d97e5b986dc24d983a0fee4de11eab72",
+        "difficulty": 492485777262,
+        "totalHashes": 1209174703409637,
+        "ts": 1738142518
+    },
+    {
+        "height": 3335784,
+        "hash": "5b1d7f1034a7f9cc00852fb79b7ca32bbbfa1784918f8ad1b5022f33b91f2176",
+        "difficulty": 479503042384,
+        "totalHashes": 1209065765015282,
+        "ts": 1738135857
+    },
+    {
+        "height": 3335729,
+        "hash": "58d2b5c8276af85b757e1d7c4d2f0d875f21cf6c1f96e04a8afb0b5dc7b03eef",
+        "difficulty": 465267629090,
+        "totalHashes": 1208958044214160,
+        "ts": 1738129691
+    },
+    {
+        "height": 3335586,
+        "hash": "ff4a3cc837da03752643968f9dde024f3f6c4c51d132cc67c1a9e1231a52681f",
+        "difficulty": 443849668105,
+        "totalHashes": 1208685212788416,
+        "ts": 1738113537
+    },
+    {
+        "height": 3334711,
+        "hash": "9dd59dcdaf4a9c45158ff8248eebee514ebecc42d8d887a3aa7822ce0256b9da",
+        "difficulty": 465628478923,
+        "totalHashes": 1206803173402565,
+        "ts": 1738008911
+    },
+    {
+        "height": 3334165,
+        "hash": "48320a62f9b7ed683221b38dcff6008998e6f5aa71fd9370febb5e80709d3c0f",
+        "difficulty": 448246836386,
+        "totalHashes": 1205661901913555,
+        "ts": 1737944623
+    },
+    {
+        "height": 3333688,
+        "hash": "7f2035be2a1862e92195425fff7f270be680c2a3db2b6f0b020fce38263cfeb6",
+        "difficulty": 435319290939,
+        "totalHashes": 1204665071454568,
+        "ts": 1737889734
+    },
+    {
+        "height": 3333520,
+        "hash": "8b393eb8256ec39c86cab0ef25850f5f709c24b5ba46d95af24f118ad1a60b2f",
+        "difficulty": 429644952263,
+        "totalHashes": 1204321989107502,
+        "ts": 1737870281
+    },
+    {
+        "height": 3333469,
+        "hash": "6f56009662e7be287313a14fac059b2c7ca8fde99735e1fe2109951b1404b839",
+        "difficulty": 437785358293,
+        "totalHashes": 1204198780699239,
+        "ts": 1737863490
+    },
+    {
+        "height": 3333031,
+        "hash": "8ff29334150fb636bfa632340607b6767931b6c0b9d2e650e3fef0b4ad89fc15",
+        "difficulty": 438148330984,
+        "totalHashes": 1203259495065887,
+        "ts": 1737809793
+    },
+    {
+        "height": 3333021,
+        "hash": "da69b9bd9d0927186b438ddcf809954361d9b6e808cfb2f67242d5e28dd9e2f3",
+        "difficulty": 437362035794,
+        "totalHashes": 1203247587007009,
+        "ts": 1737809182
+    },
+    {
+        "height": 3332728,
+        "hash": "8115100f3d11057c418070c050adc6bfc836423cc85f6ec43e79274ca54f04e3",
+        "difficulty": 480106252789,
+        "totalHashes": 1202529261487070,
+        "ts": 1737769445
+    },
+    {
+        "height": 3332647,
+        "hash": "184f9e02b093b0c828487ebcc9d19683f8fb6972812abdae40490bd6b8ef68a5",
+        "difficulty": 462644165626,
+        "totalHashes": 1202362172351967,
+        "ts": 1737759805
+    },
+    {
+        "height": 3332017,
+        "hash": "1cff04b3286416566405b78768685560c6d5d881a3320cef4bdb5bef4514b924",
+        "difficulty": 483887036811,
+        "totalHashes": 1201084486963475,
+        "ts": 1737686498
+    },
+    {
+        "height": 3331845,
+        "hash": "f6f9d49913a6cd0b48ed4a959651cd38966ed9832daca8fb018efe3bc903b860",
+        "difficulty": 465071469275,
+        "totalHashes": 1200634607411726,
+        "ts": 1737660894
+    },
+    {
+        "height": 3331587,
+        "hash": "5573f48a19ecf2c30c4c388c148e7bd14df7f71ee1caa6a1a256086e372536ca",
+        "difficulty": 435239559487,
+        "totalHashes": 1200212878155155,
+        "ts": 1737636092
+    },
+    {
+        "height": 3331563,
+        "hash": "c9b4d27760cbb0349351f5293533722b4b9b1b7b33cba0d1b91db6e3d7f3d368",
+        "difficulty": 441393601773,
+        "totalHashes": 1200170909280591,
+        "ts": 1737633488
+    },
+    {
+        "height": 3331254,
+        "hash": "84dcdeb6a686ea5abe3c1d2d814f64ac25dc7f1ea373650414df4d42276dad30",
+        "difficulty": 460624797933,
+        "totalHashes": 1199551720242089,
+        "ts": 1737596937
+    },
+    {
+        "height": 3330694,
+        "hash": "1d781e637793349ec3a98031e33c0ffe5a00cccbc37933f8121ed03a5816c596",
+        "difficulty": 470253488898,
+        "totalHashes": 1198356135884550,
+        "ts": 1737527116
+    },
+    {
+        "height": 3330440,
+        "hash": "49b3447e96203fcf53fb9134813beb39745ef8ea823c7b6c1b89fddf16f0f78f",
+        "difficulty": 464074960515,
+        "totalHashes": 1197804977728296,
+        "ts": 1737495881
+    },
+    {
+        "height": 3329786,
+        "hash": "5e28451f29758e2f0e0835b510a3b7e87d124ab2b5883b6a7d1d2817aa9e1eb9",
+        "difficulty": 476150077554,
+        "totalHashes": 1196429559910672,
+        "ts": 1737417435
+    },
+    {
+        "height": 3329749,
+        "hash": "5fb57f3aa7a35fc8e80d290fe1f1a3cb8b1cdaec95f562a391452256521ddd96",
+        "difficulty": 473643607245,
+        "totalHashes": 1196347327119319,
+        "ts": 1737412263
+    },
+    {
+        "height": 3329693,
+        "hash": "ff641c3bae9e546557ed804041be04768be5bd6c912b5b88d12aa203dbd1e1fc",
+        "difficulty": 463750179239,
+        "totalHashes": 1196238062353675,
+        "ts": 1737405494
+    },
+    {
+        "height": 3329151,
+        "hash": "a6d837ef9be80570ea0c49ad0fac308b925479bfce547fdc9090f7bcaa3b6560",
+        "difficulty": 435368909489,
+        "totalHashes": 1195217733241848,
+        "ts": 1737343780
+    },
+    {
+        "height": 3329035,
+        "hash": "dcc3cd1915c6c340043b9f7e6ccb14bc73796da81d2414e07a8edad85d4a228d",
+        "difficulty": 443793035713,
+        "totalHashes": 1195013401375187,
+        "ts": 1737331358
+    },
+    {
+        "height": 3328864,
+        "hash": "d729bb93865884699a2bd6052fb05c0671f274f354368426ffa4ae6a8459a2b7",
+        "difficulty": 438747321261,
+        "totalHashes": 1194613171195334,
+        "ts": 1737307981
+    },
+    {
+        "height": 3328750,
+        "hash": "3de013bdd552dee2bb766fd61eda0ee75bf28d356974a116370ed55b4a05c82b",
+        "difficulty": 446417763137,
+        "totalHashes": 1194414190996269,
+        "ts": 1737295427
+    }
+]

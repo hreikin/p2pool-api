@@ -1,0 +1,14 @@
+{
+    "hashrate_15m": 0,
+    "hashrate_1h": 0,
+    "hashrate_24h": 0,
+    "total_hashes": 0,
+    "shares_found": 0,
+    "shares_failed": 0,
+    "average_effort": 0.000,
+    "current_effort": 0.000,
+    "connections": 0,
+    "incoming_connections": 0,
+    "block_reward_share_percent": 0.000,
+    "workers": []
+}
