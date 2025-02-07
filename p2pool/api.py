@@ -141,24 +141,87 @@ class P2PoolAPI:
         return False
     
     def get_local_console(self) -> bool:
+        """
+        Retrieve the data from local console endpoint.
+
+        This method sends a request to the "local/console" endpoint and returns
+        a bool representing the success or failure of the request.
+        
+        Returns:
+            bool: The status of the request, True if successful, False otherwise.
+        """
         return self._get_endpoint("local/console")
 
     def get_local_p2p(self) -> bool:
+        """
+        Retrieve the data from local P2P endpoint.
+        
+        This method sends a request to the "local/p2p" endpoint and returns
+        a bool representing the success or failure of the request.
+
+        Returns:
+            bool: The status of the request, True if successful, False otherwise.
+        """
         return self._get_endpoint("local/p2p")
 
     def get_local_stratum(self) -> bool:
+        """
+        Retrieve the data from local stratum endpoint.
+
+        This method sends a request to the "local/stratum" endpoint and returns
+        a bool representing the success or failure of the request.
+
+        Returns:
+            bool: The status of the request, True if successful, False otherwise.
+        """
         return self._get_endpoint("local/stratum")
 
     def get_network_stats(self) -> bool:
+        """
+        Retrieve the data from network stats endpoint.
+        
+        This method sends a request to the "network/stats" endpoint and returns
+        a bool representing the success or failure of the request.
+
+        Returns:
+            bool: The status of the request, True if successful, False otherwise.
+        """
         return self._get_endpoint("network/stats")
 
     def get_pool_blocks(self) -> bool:
+        """
+        Retrieve the data from pool blocks endpoint.
+        
+        This method sends a request to the "pool/blocks" endpoint and returns
+        a bool representing the success or failure of the request.
+
+        Returns:
+            bool: The status of the request, True if successful, False otherwise.
+        """
         return self._get_endpoint("pool/blocks")
 
     def get_pool_stats(self) -> bool:
+        """
+        Retrieve the data from pool stats endpoint.
+
+        This method sends a request to the "pool/stats" endpoint and returns
+        a bool representing the success or failure of the request.
+
+        Returns:
+            bool: The status of the request, True if successful, False otherwise.
+        """
         return self._get_endpoint("pool/stats")
 
     def get_stats_mod(self) -> bool:
+        """
+        Retrieve the data from stats mod endpoint.
+
+        This method sends a request to the "stats_mod" endpoint and returns
+        a bool representing the success or failure of the request.
+
+        Returns:
+            bool: True if the operation was successful, False otherwise.
+        """
         return self._get_endpoint("stats_mod")
 
     def get_all_endpoints(self) -> bool:
