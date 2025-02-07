@@ -45,7 +45,7 @@ class P2PoolAPI:
         self._workers_full_cache = {}
         self._workers_cache = {}
         self._network_stats_cache = {}
-        self._pool_blocks_cache = {}
+        self._pool_blocks_cache = []
         self._pool_stats_cache = {}
         self._stats_mod_cache = {}
         self.get_all_data()
