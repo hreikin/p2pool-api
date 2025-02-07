@@ -6,6 +6,7 @@ This module provides the `P2PoolAPI` class for interacting with various data sou
 
 import json, logging, requests
 from pathlib import Path
+from urllib.parse import urlparse
 
 log = logging.getLogger("p2pool.api")
 
@@ -31,6 +32,8 @@ class P2PoolAPI:
             api_path (str): The base path to the API data directory or URL.
             is_remote (bool): Indicates if the API path is a remote URL.
         """
+        if not self._validate_api_path(api_path, is_remote):
+            raise ValueError("Invalid API path provided.")
         self._api_path = Path(api_path).resolve() if not is_remote else api_path
         self._is_remote = is_remote
         self._local_console = {}
@@ -43,6 +46,25 @@ class P2PoolAPI:
         self._pool_stats = {}
         self._stats_mod = {}
         self.get_all_data()
+
+    def _validate_api_path(self, api_path: str, is_remote: bool) -> bool:
+        """
+        Validates the provided API path.
+
+        Args:
+            api_path (str): The API path to validate.
+            is_remote (bool): Indicates if the API path is a remote URL.
+
+        Returns:
+            bool: True if the API path is valid, False otherwise.
+        """
+        if is_remote:
+            # Validate URL
+            parsed_url = urlparse(api_path)
+            return all([parsed_url.scheme, parsed_url.netloc])
+        else:
+            # Validate local file path
+            return Path(api_path).exists()
 
     def _fetch_data(self, endpoint: str) -> dict | bool:
         """
