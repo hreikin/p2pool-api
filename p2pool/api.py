@@ -118,86 +118,50 @@ class P2PoolAPI:
         except KeyError:
             log.error("Key not found in cache")
             return "N/A"
-    
-    def get_local_console(self) -> bool:
+        
+    def _get_endpoint(self, endpoint: str) -> bool:
         """
-        Loads data from the `local/console` API endpoint.
+        Loads data from the specified API endpoint.
+
+        Args:
+            endpoint (str): The API endpoint to fetch data from.
 
         Returns:
             bool: True if the operation was successful, False otherwise.
         """
-        self._local_console_cache = self._fetch_data("local/console")
-        return bool(self._local_console_cache)
-
-    def get_local_p2p(self) -> bool:
-        """
-        Loads data from the `local/p2p` API endpoint.
-
-        Returns:
-            bool: True if the operation was successful, False otherwise.
-        """
-        self._local_p2p_cache = self._fetch_data("local/p2p")
-        return bool(self._local_p2p_cache)
-
-    def get_local_stratum(self) -> bool:
-        """
-        Loads data from the `local/stratum` API endpoint and processes worker data.
-
-        Returns:
-            bool: True if the operation was successful, False otherwise.
-        """
-        self._local_stratum_cache = self._fetch_data("local/stratum")
-        if self._local_stratum_cache:
-            self._workers_full_cache = self._local_stratum_cache["workers"]
-            self._workers_cache = []
-            for w in self._workers_full_cache:
-                w_list = w.split(",")
-                self._workers_cache.append(w_list)
-            self._workers_cache = sorted(self._workers_cache, key=lambda x: int(x[3]), reverse=True)
+        cache_attr = f"_{endpoint.replace('/', '_')}_cache"
+        data = self._fetch_data(endpoint)
+        if data:
+            setattr(self, cache_attr, data)
+            if endpoint == "local/stratum":
+                self._workers_full_cache = data["workers"]
+                self._workers_cache = [w.split(",") for w in self._workers_full_cache]
+                self._workers_cache = sorted(self._workers_cache, key=lambda x: int(x[3]), reverse=True)
             return True
         return False
+    
+    def get_local_console(self) -> bool:
+        return self._get_endpoint("local/console")
+
+    def get_local_p2p(self) -> bool:
+        return self._get_endpoint("local/p2p")
+
+    def get_local_stratum(self) -> bool:
+        return self._get_endpoint("local/stratum")
 
     def get_network_stats(self) -> bool:
-        """
-        Loads data from the `network/stats` API endpoint.
-
-        Returns:
-            bool: True if the operation was successful, False otherwise.
-        """
-        self._network_stats_cache = self._fetch_data("network/stats")
-        return bool(self._network_stats_cache)
+        return self._get_endpoint("network/stats")
 
     def get_pool_blocks(self) -> bool:
-        """
-        Loads data from the `pool/blocks` API endpoint.
-
-        Returns:
-            bool: True if the operation was successful, False otherwise.
-        """
-        self._pool_blocks_cache = self._fetch_data("pool/blocks")
-        return bool(self._pool_blocks_cache)
+        return self._get_endpoint("pool/blocks")
 
     def get_pool_stats(self) -> bool:
-        """
-        Loads data from the `pool/stats` API endpoint.
-
-        Returns:
-            bool: True if the operation was successful, False otherwise.
-        """
-        self._pool_stats_cache = self._fetch_data("pool/stats")
-        return bool(self._pool_stats_cache)
+        return self._get_endpoint("pool/stats")
 
     def get_stats_mod(self) -> bool:
-        """
-        Loads data from the `stats_mod` API endpoint.
+        return self._get_endpoint("stats_mod")
 
-        Returns:
-            bool: True if the operation was successful, False otherwise.
-        """
-        self._stats_mod_cache = self._fetch_data("stats_mod")
-        return bool(self._stats_mod_cache)
-
-    def get_all_data(self) -> bool:
+    def get_all_endpoints(self) -> bool:
         """
         Fetches and processes data from all API endpoints.
 
