@@ -37,15 +37,15 @@ class P2PoolAPI:
         
         self._api_path = Path(api_path).resolve() if not is_remote else api_path
         self._is_remote = is_remote
-        self._local_console = {}
-        self._local_p2p = {}
-        self._local_stratum = {}
-        self._workers_full = {}
-        self._workers = {}
-        self._network_stats = {}
-        self._pool_blocks = {}
-        self._pool_stats = {}
-        self._stats_mod = {}
+        self._local_console_cache = {}
+        self._local_p2p_cache = {}
+        self._local_stratum_cache = {}
+        self._workers_full_cache = {}
+        self._workers_cache = {}
+        self._network_stats_cache = {}
+        self._pool_blocks_cache = {}
+        self._pool_stats_cache = {}
+        self._stats_mod_cache = {}
         self.get_all_data()
 
     def _validate_api_path(self, api_path: str, is_remote: bool) -> bool:
@@ -99,8 +99,8 @@ class P2PoolAPI:
         Returns:
             bool: True if the operation was successful, False otherwise.
         """
-        self._local_console = self._fetch_data("local/console")
-        return bool(self._local_console)
+        self._local_console_cache = self._fetch_data("local/console")
+        return bool(self._local_console_cache)
 
     def get_local_p2p(self) -> bool:
         """
@@ -109,8 +109,8 @@ class P2PoolAPI:
         Returns:
             bool: True if the operation was successful, False otherwise.
         """
-        self._local_p2p = self._fetch_data("local/p2p")
-        return bool(self._local_p2p)
+        self._local_p2p_cache = self._fetch_data("local/p2p")
+        return bool(self._local_p2p_cache)
 
     def get_local_stratum(self) -> bool:
         """
@@ -119,14 +119,14 @@ class P2PoolAPI:
         Returns:
             bool: True if the operation was successful, False otherwise.
         """
-        self._local_stratum = self._fetch_data("local/stratum")
-        if self._local_stratum:
-            self._workers_full = self._local_stratum["workers"]
-            self._workers = []
-            for w in self._workers_full:
+        self._local_stratum_cache = self._fetch_data("local/stratum")
+        if self._local_stratum_cache:
+            self._workers_full_cache = self._local_stratum_cache["workers"]
+            self._workers_cache = []
+            for w in self._workers_full_cache:
                 w_list = w.split(",")
-                self._workers.append(w_list)
-            self._workers = sorted(self._workers, key=lambda x: int(x[3]), reverse=True)
+                self._workers_cache.append(w_list)
+            self._workers_cache = sorted(self._workers_cache, key=lambda x: int(x[3]), reverse=True)
             return True
         return False
 
@@ -137,8 +137,8 @@ class P2PoolAPI:
         Returns:
             bool: True if the operation was successful, False otherwise.
         """
-        self._network_stats = self._fetch_data("network/stats")
-        return bool(self._network_stats)
+        self._network_stats_cache = self._fetch_data("network/stats")
+        return bool(self._network_stats_cache)
 
     def get_pool_blocks(self) -> bool:
         """
@@ -147,8 +147,8 @@ class P2PoolAPI:
         Returns:
             bool: True if the operation was successful, False otherwise.
         """
-        self._pool_blocks = self._fetch_data("pool/blocks")
-        return bool(self._pool_blocks)
+        self._pool_blocks_cache = self._fetch_data("pool/blocks")
+        return bool(self._pool_blocks_cache)
 
     def get_pool_stats(self) -> bool:
         """
@@ -157,8 +157,8 @@ class P2PoolAPI:
         Returns:
             bool: True if the operation was successful, False otherwise.
         """
-        self._pool_stats = self._fetch_data("pool/stats")
-        return bool(self._pool_stats)
+        self._pool_stats_cache = self._fetch_data("pool/stats")
+        return bool(self._pool_stats_cache)
 
     def get_stats_mod(self) -> bool:
         """
@@ -167,8 +167,8 @@ class P2PoolAPI:
         Returns:
             bool: True if the operation was successful, False otherwise.
         """
-        self._stats_mod = self._fetch_data("stats_mod")
-        return bool(self._stats_mod)
+        self._stats_mod_cache = self._fetch_data("stats_mod")
+        return bool(self._stats_mod_cache)
 
     def get_all_data(self) -> bool:
         """
@@ -178,17 +178,21 @@ class P2PoolAPI:
             bool: True if all data sources were successfully fetched, False otherwise.
         """
         try:
-            self.get_local_console()
-            self.get_local_p2p()
-            self.get_local_stratum()
-            self.get_network_stats()
-            self.get_pool_blocks()
-            self.get_pool_stats()
-            self.get_stats_mod()
-            return True
-        except Exception as e:
-            log.error(f"An error occurred fetching the latest data: {e}")
+            get_local_console_success = self.get_local_console()
+            get_local_p2p_success = self.get_local_p2p()
+            get_local_stratum_success = self.get_local_stratum()
+            get_network_stats_success = self.get_network_stats()
+            get_pool_blocks_success = self.get_pool_blocks()
+            get_pool_stats_success = self.get_pool_stats()
+            get_stats_mod_success = self.get_stats_mod()
+            if all([get_local_console_success, get_local_p2p_success, get_local_stratum_success, get_network_stats_success, get_pool_blocks_success, get_pool_stats_success, get_stats_mod_success]):
+                log.info("All data fetched successfully.")
+                return True
+            log.error("An error occurred fetching some of the latest data, one or more endpoints failed.")
+            log.error(f"get_local_console: {get_local_console_success},\nget_local_p2p: {get_local_p2p_success},\nget_local_stratum: {get_local_stratum_success},\nget_network_stats: {get_network_stats_success},\nget_pool_blocks: {get_pool_blocks_success},\nget_pool_stats: {get_pool_stats_success},\nget_stats_mod: {get_stats_mod_success}")
             return False
+        except Exception as e:
+            raise P2PoolAPIError(e, traceback.format_exc(), f"An error occurred fetching the latest data: {e}") from e
 
     @property
     def local_console(self) -> dict | bool:
@@ -199,8 +203,8 @@ class P2PoolAPI:
             dict |: The data from the `local/console` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_console)
-            return self._local_console
+            log.debug(self._local_console_cache)
+            return self._local_console_cache
         except Exception as e:
             log.error(f"An error occurred fetching the `local_console` data: {e}")
             return False
@@ -214,8 +218,8 @@ class P2PoolAPI:
             dict |: The data from the `local/p2p` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_p2p)
-            return self._local_p2p
+            log.debug(self._local_p2p_cache)
+            return self._local_p2p_cache
         except Exception as e:
             log.error(f"An error occurred fetching the `local_p2p` data: {e}")
             return False
@@ -229,8 +233,8 @@ class P2PoolAPI:
             dict |: The data from the `local/stratum` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_stratum)
-            return self._local_stratum
+            log.debug(self._local_stratum_cache)
+            return self._local_stratum_cache
         except Exception as e:
             log.error(f"An error occurred fetching the `local_stratum` data: {e}")
             return False
@@ -244,8 +248,8 @@ class P2PoolAPI:
             dict |: The data from the `network/stats` endpoint, False otherwise
         """
         try:
-            log.debug(self._network_stats)
-            return self._network_stats
+            log.debug(self._network_stats_cache)
+            return self._network_stats_cache
         except Exception as e:
             log.error(f"An error occurred fetching the `network_stats` data: {e}")
             return False
@@ -259,8 +263,8 @@ class P2PoolAPI:
             dict |: The data from the `pool/blocks` endpoint, False otherwise
         """
         try:
-            log.debug(self._pool_blocks)
-            return self._pool_blocks
+            log.debug(self._pool_blocks_cache)
+            return self._pool_blocks_cache
         except Exception as e:
             log.error(f"An error occurred fetching the `pool_blocks` data: {e}")
             return False
@@ -274,8 +278,8 @@ class P2PoolAPI:
             dict |: The data from the `pool/stats` endpoint, False otherwise
         """
         try:
-            log.debug(self._pool_stats)
-            return self._pool_stats
+            log.debug(self._pool_stats_cache)
+            return self._pool_stats_cache
         except Exception as e:
             log.error(f"An error occurred fetching the `pool_stats` data: {e}")
             return False
@@ -289,8 +293,8 @@ class P2PoolAPI:
             dict |: The data from the `stats_mod` endpoint, False otherwise
         """
         try:
-            log.debug(self._stats_mod)
-            return self._stats_mod
+            log.debug(self._stats_mod_cache)
+            return self._stats_mod_cache
         except Exception as e:
             log.error(f"An error occurred fetching the `stats_mod` data: {e}")
             return False
@@ -304,8 +308,8 @@ class P2PoolAPI:
             str | bool: The `mode` data from the `local_console` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_console["mode"])
-            return self._local_console["mode"]
+            log.debug(self._local_console_cache["mode"])
+            return self._local_console_cache["mode"]
         except Exception as e:
             log.error(f"An error occurred fetching the `mode` data: {e}")
             return False
@@ -319,8 +323,8 @@ class P2PoolAPI:
             str | bool: The `tcp_port` data from the `local_console` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_console["tcp_port"])
-            return self._local_console["tcp_port"]
+            log.debug(self._local_console_cache["tcp_port"])
+            return self._local_console_cache["tcp_port"]
         except Exception as e:
             log.error(f"An error occurred fetching the `tcp_port` data: {e}")
             return False
@@ -334,8 +338,8 @@ class P2PoolAPI:
             int | bool: The `connections` data from the `local_p2p` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_p2p["connections"])
-            return self._local_p2p["connections"]
+            log.debug(self._local_p2p_cache["connections"])
+            return self._local_p2p_cache["connections"]
         except Exception as e:
             log.error(f"An error occurred fetching the `connections` data: {e}")
             return False
@@ -349,8 +353,8 @@ class P2PoolAPI:
             int | bool: The `incoming_connections` data from the `local_p2p` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_p2p["incoming_connections"])
-            return self._local_p2p["incoming_connections"]
+            log.debug(self._local_p2p_cache["incoming_connections"])
+            return self._local_p2p_cache["incoming_connections"]
         except Exception as e:
             log.error(f"An error occurred fetching the `incoming_connections` data: {e}")
             return False
@@ -364,8 +368,8 @@ class P2PoolAPI:
             int | bool: The `peer_list_size` data from the `local_p2p` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_p2p["peer_list_size"])
-            return self._local_p2p["peer_list_size"]
+            log.debug(self._local_p2p_cache["peer_list_size"])
+            return self._local_p2p_cache["peer_list_size"]
         except Exception as e:
             log.error(f"An error occurred fetching the `peer_list_size` data: {e}")
             return False
@@ -379,8 +383,8 @@ class P2PoolAPI:
             list | bool: The `peers` data from the `local_p2p` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_p2p["peers"])
-            return self._local_p2p["peers"]
+            log.debug(self._local_p2p_cache["peers"])
+            return self._local_p2p_cache["peers"]
         except Exception as e:
             log.error(f"An error occurred fetching the `peers` data: {e}")
             return False
@@ -394,8 +398,8 @@ class P2PoolAPI:
             int | bool: The `uptime` data from the `local_p2p` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_p2p["uptime"])
-            return self._local_p2p["uptime"]
+            log.debug(self._local_p2p_cache["uptime"])
+            return self._local_p2p_cache["uptime"]
         except Exception as e:
             log.error(f"An error occurred fetching the `uptime` data: {e}")
             return False
@@ -409,8 +413,8 @@ class P2PoolAPI:
             int | bool: The `hashrate_15m` data from the `local_stratum` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_stratum["hashrate_15m"])
-            return self._local_stratum["hashrate_15m"]
+            log.debug(self._local_stratum_cache["hashrate_15m"])
+            return self._local_stratum_cache["hashrate_15m"]
         except Exception as e:
             log.error(f"An error occurred fetching the `hashrate_15m` data: {e}")
             return False
@@ -424,8 +428,8 @@ class P2PoolAPI:
             int | bool: The `hashrate_1h` data from the `local_stratum` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_stratum["hashrate_1h"])
-            return self._local_stratum["hashrate_1h"]
+            log.debug(self._local_stratum_cache["hashrate_1h"])
+            return self._local_stratum_cache["hashrate_1h"]
         except Exception as e:
             log.error(f"An error occurred fetching the `hashrate_1h` data: {e}")
             return False
@@ -439,8 +443,8 @@ class P2PoolAPI:
             int | bool: The `hashrate_24h` data from the `local_stratum` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_stratum["hashrate_24h"])
-            return self._local_stratum["hashrate_24h"]
+            log.debug(self._local_stratum_cache["hashrate_24h"])
+            return self._local_stratum_cache["hashrate_24h"]
         except Exception as e:
             log.error(f"An error occurred fetching the `hashrate_24h` data: {e}")
             return False
@@ -454,8 +458,8 @@ class P2PoolAPI:
             int | bool: The `total_hashes` data from the `local_stratum` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_stratum["total_hashes"])
-            return self._local_stratum["total_hashes"]
+            log.debug(self._local_stratum_cache["total_hashes"])
+            return self._local_stratum_cache["total_hashes"]
         except Exception as e:
             log.error(f"An error occurred fetching the `total_hashes` data: {e}")
             return False
@@ -469,8 +473,8 @@ class P2PoolAPI:
             int | bool: The `shares_found` data from the `local_stratum` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_stratum["shares_found"])
-            return self._local_stratum["shares_found"]
+            log.debug(self._local_stratum_cache["shares_found"])
+            return self._local_stratum_cache["shares_found"]
         except Exception as e:
             log.error(f"An error occurred fetching the `shares_found` data: {e}")
             return False
@@ -484,8 +488,8 @@ class P2PoolAPI:
             int | bool: The `shares_failed` data from the `local_stratum` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_stratum["shares_failed"])
-            return self._local_stratum["shares_failed"]
+            log.debug(self._local_stratum_cache["shares_failed"])
+            return self._local_stratum_cache["shares_failed"]
         except Exception as e:
             log.error(f"An error occurred fetching the `shares_failed` data: {e}")
             return False
@@ -499,8 +503,8 @@ class P2PoolAPI:
             int | bool: The `average_effort` data from the `local_stratum` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_stratum["average_effort"])
-            return self._local_stratum["average_effort"]
+            log.debug(self._local_stratum_cache["average_effort"])
+            return self._local_stratum_cache["average_effort"]
         except Exception as e:
             log.error(f"An error occurred fetching the `average_effort` data: {e}")
             return False
@@ -514,8 +518,8 @@ class P2PoolAPI:
             int | bool: The `current_effort` data from the `local_stratum` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_stratum["current_effort"])
-            return self._local_stratum["current_effort"]
+            log.debug(self._local_stratum_cache["current_effort"])
+            return self._local_stratum_cache["current_effort"]
         except Exception as e:
             log.error(f"An error occurred fetching the `current_effort` data: {e}")
             return False
@@ -529,8 +533,8 @@ class P2PoolAPI:
             int | bool: The `connections` data from the `local_stratum` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_stratum["connections"])
-            return self._local_stratum["connections"]
+            log.debug(self._local_stratum_cache["connections"])
+            return self._local_stratum_cache["connections"]
         except Exception as e:
             log.error(f"An error occurred fetching the `connections` data: {e}")
             return False
@@ -544,8 +548,8 @@ class P2PoolAPI:
             int | bool: The `incoming_connections` data from the `local_stratum` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_stratum["incoming_connections"])
-            return self._local_stratum["incoming_connections"]
+            log.debug(self._local_stratum_cache["incoming_connections"])
+            return self._local_stratum_cache["incoming_connections"]
         except Exception as e:
             log.error(f"An error occurred fetching the `incoming_connections` data: {e}")
             return False
@@ -559,8 +563,8 @@ class P2PoolAPI:
             int | bool: The `block_reward_share_percent` data from the `local_stratum` endpoint, False otherwise
         """
         try:
-            log.debug(self._local_stratum["block_reward_share_percent"])
-            return self._local_stratum["block_reward_share_percent"]
+            log.debug(self._local_stratum_cache["block_reward_share_percent"])
+            return self._local_stratum_cache["block_reward_share_percent"]
         except Exception as e:
             log.error(f"An error occurred fetching the `block_reward_share_percent` data: {e}")
             return False
@@ -574,8 +578,8 @@ class P2PoolAPI:
             list | bool: The `workers_full` data from the `local_stratum` endpoint, False otherwise
         """
         try:
-            log.debug(self._workers_full)
-            return self._workers_full
+            log.debug(self._workers_full_cache)
+            return self._workers_full_cache
         except Exception as e:
             log.error(f"An error occurred fetching the `workers_full` data: {e}")
             return False
@@ -589,8 +593,8 @@ class P2PoolAPI:
             list | bool: The `workers` data from the `local_stratum` endpoint, False otherwise
         """
         try:
-            log.debug(self._workers)
-            return self._workers
+            log.debug(self._workers_cache)
+            return self._workers_cache
         except Exception as e:
             log.error(f"An error occurred fetching the `workers` data: {e}")
             return False
@@ -604,8 +608,8 @@ class P2PoolAPI:
             int | bool: The `difficulty` data from the `network_stats` endpoint, False otherwise
         """
         try:
-            log.debug(self._network_stats["difficulty"])
-            return self._network_stats["difficulty"]
+            log.debug(self._network_stats_cache["difficulty"])
+            return self._network_stats_cache["difficulty"]
         except Exception as e:
             log.error(f"An error occurred fetching the `difficulty` data: {e}")
             return False
@@ -620,8 +624,8 @@ class P2PoolAPI:
         """
 
         try:
-            log.debug(self._network_stats["hash"])
-            return self._network_stats["hash"]
+            log.debug(self._network_stats_cache["hash"])
+            return self._network_stats_cache["hash"]
         except Exception as e:
             log.error(f"An error occurred fetching the `hash` data: {e}")
             return False
@@ -635,8 +639,8 @@ class P2PoolAPI:
             int | bool: The `height` data from the `network_stats` endpoint, False otherwise
         """
         try:
-            log.debug(self._network_stats["height"])
-            return self._network_stats["height"]
+            log.debug(self._network_stats_cache["height"])
+            return self._network_stats_cache["height"]
         except Exception as e:
             log.error(f"An error occurred fetching the `height` data: {e}")
             return False
@@ -650,8 +654,8 @@ class P2PoolAPI:
             int | bool: The `reward` data from the `network_stats` endpoint, False otherwise
         """
         try:
-            log.debug(self._network_stats["reward"])
-            return self._network_stats["reward"]
+            log.debug(self._network_stats_cache["reward"])
+            return self._network_stats_cache["reward"]
         except Exception as e:
             log.error(f"An error occurred fetching the `reward` data: {e}")
             return False
@@ -665,8 +669,8 @@ class P2PoolAPI:
             int | bool: The `timestamp` data from the `network_stats` endpoint, False otherwise
         """
         try:
-            log.debug(self._network_stats["timestamp"])
-            return self._network_stats["timestamp"]
+            log.debug(self._network_stats_cache["timestamp"])
+            return self._network_stats_cache["timestamp"]
         except Exception as e:
             log.error(f"An error occurred fetching the `timestamp` data: {e}")
             return False
@@ -681,8 +685,8 @@ class P2PoolAPI:
         """
         try:
             heights = []
-            for i in self._pool_blocks:
-                heights.append(self._pool_blocks[i]["height"])
+            for i in self._pool_blocks_cache:
+                heights.append(self._pool_blocks_cache[i]["height"])
             log.debug(heights)
             return heights
         except Exception as e:
@@ -699,8 +703,8 @@ class P2PoolAPI:
         """
         try:
             hashes = []
-            for i in self._pool_blocks:
-                hashes.append(self._pool_blocks[i]["hash"])
+            for i in self._pool_blocks_cache:
+                hashes.append(self._pool_blocks_cache[i]["hash"])
             log.debug(hashes)
             return hashes
         except Exception as e:
@@ -717,8 +721,8 @@ class P2PoolAPI:
         """
         try:
             difficulties = []
-            for i in self._pool_blocks:
-                difficulties.append(self._pool_blocks[i]["difficulty"])
+            for i in self._pool_blocks_cache:
+                difficulties.append(self._pool_blocks_cache[i]["difficulty"])
             log.debug(difficulties)
             return difficulties
         except Exception as e:
@@ -735,8 +739,8 @@ class P2PoolAPI:
         """
         try:
             total_hashes = []
-            for i in self._pool_blocks:
-                total_hashes.append(self._pool_blocks[i]["totalHashes"])
+            for i in self._pool_blocks_cache:
+                total_hashes.append(self._pool_blocks_cache[i]["totalHashes"])
             log.debug(total_hashes)
             return total_hashes
         except Exception as e:
@@ -753,8 +757,8 @@ class P2PoolAPI:
         """
         try:
             timestamps = []
-            for i in self._pool_blocks:
-                timestamps.append(self._pool_blocks[i]["ts"])
+            for i in self._pool_blocks_cache:
+                timestamps.append(self._pool_blocks_cache[i]["ts"])
             log.debug(timestamps)
             return timestamps
         except Exception as e:
@@ -770,8 +774,8 @@ class P2PoolAPI:
             str | bool: The `payout_type` data from the `pool_stats` endpoint, False otherwise
         """
         try:
-            log.debug(self._pool_stats["pool_list"][0])
-            return self._pool_stats["pool_list"][0]
+            log.debug(self._pool_stats_cache["pool_list"][0])
+            return self._pool_stats_cache["pool_list"][0]
         except Exception as e:
             log.error(f"An error occurred fetching the `payout_type` data: {e}")
             return False
@@ -785,8 +789,8 @@ class P2PoolAPI:
             int | bool: The `hashrate` data from the `pool_stats` endpoint, False otherwise
         """
         try:
-            log.debug(self._pool_stats["pool_statistics"]["hashRate"])
-            return self._pool_stats["pool_statistics"]["hashRate"]
+            log.debug(self._pool_stats_cache["pool_statistics"]["hashRate"])
+            return self._pool_stats_cache["pool_statistics"]["hashRate"]
         except Exception as e:
             log.error(f"An error occurred fetching the `hash_rate` data: {e}")
             return False
@@ -800,8 +804,8 @@ class P2PoolAPI:
             int | bool: The `miners` data from the `pool_stats` endpoint, False otherwise
         """
         try:
-            log.debug(self._pool_stats["pool_statistics"]["miners"])
-            return self._pool_stats["pool_statistics"]["miners"]
+            log.debug(self._pool_stats_cache["pool_statistics"]["miners"])
+            return self._pool_stats_cache["pool_statistics"]["miners"]
         except Exception as e:
             log.error(f"An error occurred fetching the `miners` data: {e}")
             return False
@@ -815,8 +819,8 @@ class P2PoolAPI:
             int | bool: The `total_hashes` data from the `pool_stats` endpoint, False otherwise
         """
         try:
-            log.debug(self._pool_stats["pool_statistics"]["totalHashes"])
-            return self._pool_stats["pool_statistics"]["totalHashes"]
+            log.debug(self._pool_stats_cache["pool_statistics"]["totalHashes"])
+            return self._pool_stats_cache["pool_statistics"]["totalHashes"]
         except Exception as e:
             log.error(f"An error occurred fetching the `total_hashes` data: {e}")
             return False
@@ -830,8 +834,8 @@ class P2PoolAPI:
             int | bool: The `last_block_found_time` data from the `pool_stats` endpoint, False otherwise
         """
         try:
-            log.debug(self._pool_stats["pool_statistics"]["lastBlockFoundTime"])
-            return self._pool_stats["pool_statistics"]["lastBlockFoundTime"]
+            log.debug(self._pool_stats_cache["pool_statistics"]["lastBlockFoundTime"])
+            return self._pool_stats_cache["pool_statistics"]["lastBlockFoundTime"]
         except Exception as e:
             log.error(f"An error occurred fetching the `last_block_found_time` data: {e}")
             return False
@@ -845,8 +849,8 @@ class P2PoolAPI:
             int | bool: The `last_block_found` data from the `pool_stats` endpoint, False otherwise
         """
         try:
-            log.debug(self._pool_stats["pool_statistics"]["lastBlockFound"])
-            return self._pool_stats["pool_statistics"]["lastBlockFound"]
+            log.debug(self._pool_stats_cache["pool_statistics"]["lastBlockFound"])
+            return self._pool_stats_cache["pool_statistics"]["lastBlockFound"]
         except Exception as e:
             log.error(f"An error occurred fetching the `last_block_found` data: {e}")
             return False
@@ -860,8 +864,8 @@ class P2PoolAPI:
             int | bool: The `total_blocks_found` data from the `pool_stats` endpoint, False otherwise
         """
         try:
-            log.debug(self._pool_stats["pool_statistics"]["totalBlocksFound"])
-            return self._pool_stats["pool_statistics"]["totalBlocksFound"]
+            log.debug(self._pool_stats_cache["pool_statistics"]["totalBlocksFound"])
+            return self._pool_stats_cache["pool_statistics"]["totalBlocksFound"]
         except Exception as e:
             log.error(f"An error occurred fetching the `total_blocks_found` data: {e}")
             return False
@@ -875,8 +879,8 @@ class P2PoolAPI:
             int | bool: The `pplns_weight` data from the `pool_stats` endpoint, False otherwise
         """
         try:
-            log.debug(self._pool_stats["pool_statistics"]["pplnsWeight"])
-            return self._pool_stats["pool_statistics"]["pplnsWeight"]
+            log.debug(self._pool_stats_cache["pool_statistics"]["pplnsWeight"])
+            return self._pool_stats_cache["pool_statistics"]["pplnsWeight"]
         except Exception as e:
             log.error(f"An error occurred fetching the `pplns_weight` data: {e}")
             return False
@@ -890,8 +894,8 @@ class P2PoolAPI:
             int | bool: The `pplns_window_size` data from the `pool_stats` endpoint, False otherwise
         """
         try:
-            log.debug(self._pool_stats["pool_statistics"]["pplnsWindowSize"])
-            return self._pool_stats["pool_statistics"]["pplnsWindowSize"]
+            log.debug(self._pool_stats_cache["pool_statistics"]["pplnsWindowSize"])
+            return self._pool_stats_cache["pool_statistics"]["pplnsWindowSize"]
         except Exception as e:
             log.error(f"An error occurred fetching the `pplns_window_size` data: {e}")
             return False
@@ -906,8 +910,8 @@ class P2PoolAPI:
         """
         
         try:
-            log.debug(self._pool_stats["pool_statistics"]["sidechainDifficulty"])
-            return self._pool_stats["pool_statistics"]["sidechainDifficulty"]
+            log.debug(self._pool_stats_cache["pool_statistics"]["sidechainDifficulty"])
+            return self._pool_stats_cache["pool_statistics"]["sidechainDifficulty"]
         except Exception as e:
             log.error(f"An error occurred fetching the `sidechain_difficulty` data: {e}")
             return False
@@ -921,8 +925,8 @@ class P2PoolAPI:
             int | bool: The `sidechain_height` data from the `pool_stats` endpoint, False otherwise
         """
         try:
-            log.debug(self._pool_stats["pool_statistics"]["sidechainHeight"])
-            return self._pool_stats["pool_statistics"]["sidechainHeight"]
+            log.debug(self._pool_stats_cache["pool_statistics"]["sidechainHeight"])
+            return self._pool_stats_cache["pool_statistics"]["sidechainHeight"]
         except Exception as e:
             log.error(f"An error occurred fetching the `sidechain_height` data: {e}")
             return False
@@ -936,8 +940,8 @@ class P2PoolAPI:
             int | bool: The `config` data from the `stats_mod` endpoint, False otherwise
         """
         try:
-            log.debug(self._stats_mod["config"])
-            return self._stats_mod["config"]
+            log.debug(self._stats_mod_cache["config"])
+            return self._stats_mod_cache["config"]
         except Exception as e:
             log.error(f"An error occurred fetching the `config` data: {e}")
             return False
@@ -952,7 +956,7 @@ class P2PoolAPI:
         """
         try:
             ports = []
-            for i in self._stats_mod["config"]["ports"]:
+            for i in self._stats_mod_cache["config"]["ports"]:
                 ports.append(i["port"])
             log.debug(ports)
             return ports
@@ -970,7 +974,7 @@ class P2PoolAPI:
         """
         try:
             tls = []
-            for i in self._stats_mod["config"]["tls"]:
+            for i in self._stats_mod_cache["config"]["tls"]:
                 tls.append(i["port"])
             log.debug(tls)
             return tls
@@ -987,8 +991,8 @@ class P2PoolAPI:
             int | bool: The `fee` data from the `stats_mod` endpoint, False otherwise
         """
         try:
-            log.debug(self._stats_mod["config"]["fee"])
-            return self._stats_mod["config"]["fee"]
+            log.debug(self._stats_mod_cache["config"]["fee"])
+            return self._stats_mod_cache["config"]["fee"]
         except Exception as e:
             log.error(f"An error occurred fetching the `fee` data: {e}")
             return False
@@ -1002,8 +1006,8 @@ class P2PoolAPI:
             int | bool: The `min_payment_threshold` data from the `stats_mod` endpoint, False otherwise
         """
         try:
-            log.debug(self._stats_mod["config"]["minPaymentThreshold"])
-            return self._stats_mod["config"]["minPaymentThreshold"]
+            log.debug(self._stats_mod_cache["config"]["minPaymentThreshold"])
+            return self._stats_mod_cache["config"]["minPaymentThreshold"]
         except Exception as e:
             log.error(f"An error occurred fetching the `min_payment_threshold` data: {e}")
             return False
@@ -1017,8 +1021,8 @@ class P2PoolAPI:
             int | bool: The `network_height` data from the `stats_mod` endpoint, False otherwise
         """
         try:
-            log.debug(self._stats_mod["config"]["network"]["height"])
-            return self._stats_mod["config"]["network"]["height"]
+            log.debug(self._stats_mod_cache["config"]["network"]["height"])
+            return self._stats_mod_cache["config"]["network"]["height"]
         except Exception as e:
             log.error(f"An error occurred fetching the `network_height` data: {e}")
             return False
@@ -1032,8 +1036,8 @@ class P2PoolAPI:
             str | bool: The `last_block_found` data from the `stats_mod` endpoint, False otherwise
         """
         try:
-            log.debug(self._stats_mod["config"]["pool"]["stats"]["lastBlockFound"])
-            return self._stats_mod["config"]["pool"]["stats"]["lastBlockFound"]
+            log.debug(self._stats_mod_cache["config"]["pool"]["stats"]["lastBlockFound"])
+            return self._stats_mod_cache["config"]["pool"]["stats"]["lastBlockFound"]
         except Exception as e:
             log.error(f"An error occurred fetching the `last_block_found` data: {e}")
             return False
@@ -1047,8 +1051,8 @@ class P2PoolAPI:
             list | bool: The `blocks` data from the `stats_mod` endpoint, False otherwise
         """
         try:
-            log.debug(self._stats_mod["config"]["pool"]["stats"]["blocks"])
-            return self._stats_mod["config"]["pool"]["stats"]["blocks"]
+            log.debug(self._stats_mod_cache["config"]["pool"]["stats"]["blocks"])
+            return self._stats_mod_cache["config"]["pool"]["stats"]["blocks"]
         except Exception as e:
             log.error(f"An error occurred fetching the `blocks` data: {e}")
             return False
@@ -1062,8 +1066,8 @@ class P2PoolAPI:
             int | bool: The `miners` data from the `stats_mod` endpoint, False otherwise
         """
         try:
-            log.debug(self._stats_mod["config"]["pool"]["stats"]["miners"])
-            return self._stats_mod["config"]["pool"]["stats"]["miners"]
+            log.debug(self._stats_mod_cache["config"]["pool"]["stats"]["miners"])
+            return self._stats_mod_cache["config"]["pool"]["stats"]["miners"]
         except Exception as e:
             log.error(f"An error occurred fetching the `miners` data: {e}")
             return False
@@ -1077,8 +1081,8 @@ class P2PoolAPI:
             int | bool: The `hashrate` data from the `stats_mod` endpoint, False otherwise
         """
         try:
-            log.debug(self._stats_mod["config"]["pool"]["stats"]["hashrate"])
-            return self._stats_mod["config"]["pool"]["stats"]["hashrate"]
+            log.debug(self._stats_mod_cache["config"]["pool"]["stats"]["hashrate"])
+            return self._stats_mod_cache["config"]["pool"]["stats"]["hashrate"]
         except Exception as e:
             log.error(f"An error occurred fetching the `hashrate` data: {e}")
             return False
@@ -1092,8 +1096,8 @@ class P2PoolAPI:
             int | bool: The `round_hashes` data from the `stats_mod` endpoint, False otherwise
         """
         try:
-            log.debug(self._stats_mod["config"]["pool"]["stats"]["roundHashes"])
-            return self._stats_mod["config"]["pool"]["stats"]["roundHashes"]
+            log.debug(self._stats_mod_cache["config"]["pool"]["stats"]["roundHashes"])
+            return self._stats_mod_cache["config"]["pool"]["stats"]["roundHashes"]
         except Exception as e:
             log.error(f"An error occurred fetching the `round_hashes` data: {e}")
             return False
