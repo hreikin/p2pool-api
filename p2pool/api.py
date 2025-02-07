@@ -8,6 +8,7 @@ import json, logging, requests, traceback
 from pathlib import Path
 from urllib.parse import urlparse
 from p2pool.exceptions import P2PoolAPIError
+from typing import Any
 
 log = logging.getLogger("p2pool.api")
 
@@ -93,6 +94,31 @@ class P2PoolAPI:
             log.error(f"An error occurred reading data from `{endpoint}`: {e}")
             return False
 
+    def _get_data_from_cache(self, cache: dict, keys: list) -> Any:
+        """
+        Retrieve data from a nested dictionary cache using a list of keys.
+
+        Args:
+            cache (dict): The cache dictionary to retrieve data from.
+            keys (list): A list of keys to traverse the nested dictionary.
+
+        Returns:
+            Any: The retrieved data if the keys exist, otherwise "N/A".
+
+        Raises:
+            KeyError: If any key in the list of keys is not found in the cache.
+        """
+        data = "N/A"
+        try:
+            data = cache
+            if len(keys) > 0:
+                for key in keys:
+                    data = data[key]
+            return data
+        except KeyError:
+            log.error("Key not found in cache")
+            return "N/A"
+    
     def get_local_console(self) -> bool:
         """
         Loads data from the `local/console` API endpoint.
@@ -196,912 +222,289 @@ class P2PoolAPI:
             raise P2PoolAPIError(e, traceback.format_exc(), f"An error occurred fetching the latest data: {e}") from e
 
     @property
-    def local_console(self) -> dict | bool:
-        """
-        The data from the `local/console` endpoint.
-
-        Returns:
-            dict |: The data from the `local/console` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_console_cache)
-            return self._local_console_cache
-        except Exception as e:
-            log.error(f"An error occurred fetching the `local_console` data: {e}")
-            return False
+    def local_console(self):
+        return self._get_data_from_cache(self._local_console_cache, [])
 
     @property
-    def local_p2p(self) -> dict | bool:
-        """
-        The data from the `local/p2p` endpoint.
-
-        Returns:
-            dict |: The data from the `local/p2p` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_p2p_cache)
-            return self._local_p2p_cache
-        except Exception as e:
-            log.error(f"An error occurred fetching the `local_p2p` data: {e}")
-            return False
+    def local_p2p(self):
+        return self._get_data_from_cache(self._local_p2p_cache, [])
 
     @property
-    def local_stratum(self) -> dict | bool:
-        """
-        The data from the `local/stratum` endpoint.
-
-        Returns:
-            dict |: The data from the `local/stratum` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_stratum_cache)
-            return self._local_stratum_cache
-        except Exception as e:
-            log.error(f"An error occurred fetching the `local_stratum` data: {e}")
-            return False
+    def local_stratum(self):
+        return self._get_data_from_cache(self._local_stratum_cache, [])
 
     @property
-    def network_stats(self) -> dict | bool:
-        """
-        The data from the `network/stats` endpoint.
-
-        Returns:
-            dict |: The data from the `network/stats` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._network_stats_cache)
-            return self._network_stats_cache
-        except Exception as e:
-            log.error(f"An error occurred fetching the `network_stats` data: {e}")
-            return False
+    def network_stats(self):
+        return self._get_data_from_cache(self._network_stats_cache, [])
 
     @property
-    def pool_blocks(self) -> dict | bool:
-        """
-        The data from the `pool/blocks` endpoint.
-
-        Returns:
-            dict |: The data from the `pool/blocks` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._pool_blocks_cache)
-            return self._pool_blocks_cache
-        except Exception as e:
-            log.error(f"An error occurred fetching the `pool_blocks` data: {e}")
-            return False
+    def pool_blocks(self):
+        return self._get_data_from_cache(self._pool_blocks_cache, [])
 
     @property
-    def pool_stats(self) -> dict | bool:
-        """
-        The data from the `pool/stats` endpoint.
-
-        Returns:
-            dict |: The data from the `pool/stats` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._pool_stats_cache)
-            return self._pool_stats_cache
-        except Exception as e:
-            log.error(f"An error occurred fetching the `pool_stats` data: {e}")
-            return False
+    def pool_stats(self):
+        return self._get_data_from_cache(self._pool_stats_cache, [])
 
     @property
-    def stats_mod(self) -> dict | bool:
-        """
-        The data from the `stats_mod` endpoint.
-
-        Returns:
-            dict |: The data from the `stats_mod` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._stats_mod_cache)
-            return self._stats_mod_cache
-        except Exception as e:
-            log.error(f"An error occurred fetching the `stats_mod` data: {e}")
-            return False
+    def stats_mod(self):
+        return self._get_data_from_cache(self._stats_mod_cache, [])
     
     @property
-    def local_console_mode(self) -> str | bool:
-        """
-        The `mode` data from the `local_console` endpoint.
-
-        Returns:
-            str | bool: The `mode` data from the `local_console` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_console_cache["mode"])
-            return self._local_console_cache["mode"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `mode` data: {e}")
-            return False
+    def local_console_mode(self):
+        return self._get_data_from_cache(self._local_console_cache, ["mode"])
     
     @property
-    def local_console_tcp_port(self) -> str | bool:
-        """
-        The `tcp_port` data from the `local_console` endpoint.
-
-        Returns:
-            str | bool: The `tcp_port` data from the `local_console` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_console_cache["tcp_port"])
-            return self._local_console_cache["tcp_port"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `tcp_port` data: {e}")
-            return False
+    def local_console_tcp_port(self):
+        return self._get_data_from_cache(self._local_console_cache, ["tcp_port"])
     
     @property
-    def local_p2p_connections(self) -> int | bool:
-        """
-        The `connections` data from the `local_p2p` endpoint.
-
-        Returns:
-            int | bool: The `connections` data from the `local_p2p` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_p2p_cache["connections"])
-            return self._local_p2p_cache["connections"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `connections` data: {e}")
-            return False
+    def local_p2p_connections(self):
+        return self._get_data_from_cache(self._local_p2p_cache, ["connections"])
     
     @property
-    def local_p2p_incoming_connections(self) -> int | bool:
-        """
-        The `incoming_connections` data from the `local_p2p` endpoint.
-
-        Returns:
-            int | bool: The `incoming_connections` data from the `local_p2p` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_p2p_cache["incoming_connections"])
-            return self._local_p2p_cache["incoming_connections"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `incoming_connections` data: {e}")
-            return False
+    def local_p2p_incoming_connections(self):
+        return self._get_data_from_cache(self._local_p2p_cache, ["incoming_connections"])
     
     @property
-    def local_p2p_peer_list_size(self) -> int | bool:
-        """
-        The `peer_list_size` data from the `local_p2p` endpoint.
-
-        Returns:
-            int | bool: The `peer_list_size` data from the `local_p2p` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_p2p_cache["peer_list_size"])
-            return self._local_p2p_cache["peer_list_size"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `peer_list_size` data: {e}")
-            return False
+    def local_p2p_peer_list_size(self):
+        return self._get_data_from_cache(self._local_p2p_cache, ["peer_list_size"])
     
     @property
-    def local_p2p_peers(self) -> list | bool:
-        """
-        The `peers` data from the `local_p2p` endpoint.
-
-        Returns:
-            list | bool: The `peers` data from the `local_p2p` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_p2p_cache["peers"])
-            return self._local_p2p_cache["peers"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `peers` data: {e}")
-            return False
+    def local_p2p_peers(self):
+        return self._get_data_from_cache(self._local_p2p_cache, ["peers"])
     
     @property
-    def local_p2p_uptime(self) -> int | bool:
-        """
-        The `uptime` data from the `local_p2p` endpoint.
-
-        Returns:
-            int | bool: The `uptime` data from the `local_p2p` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_p2p_cache["uptime"])
-            return self._local_p2p_cache["uptime"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `uptime` data: {e}")
-            return False
+    def local_p2p_uptime(self):
+        return self._get_data_from_cache(self._local_p2p_cache, ["uptime"])
     
     @property
-    def local_stratum_hashrate_15m(self) -> int | bool:
-        """
-        The `hashrate_15m` data from the `local_stratum` endpoint.
-
-        Returns:
-            int | bool: The `hashrate_15m` data from the `local_stratum` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_stratum_cache["hashrate_15m"])
-            return self._local_stratum_cache["hashrate_15m"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `hashrate_15m` data: {e}")
-            return False
+    def local_stratum_hashrate_15m(self):
+        return self._get_data_from_cache(self._local_stratum_cache, ["hashrate_15m"])
     
     @property
-    def local_stratum_hashrate_1h(self) -> int | bool:
-        """
-        The `hashrate_1h` data from the `local_stratum` endpoint.
-
-        Returns:
-            int | bool: The `hashrate_1h` data from the `local_stratum` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_stratum_cache["hashrate_1h"])
-            return self._local_stratum_cache["hashrate_1h"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `hashrate_1h` data: {e}")
-            return False
+    def local_stratum_hashrate_1h(self):
+        return self._get_data_from_cache(self._local_stratum_cache, ["hashrate_1h"])
     
     @property
-    def local_stratum_hashrate_24h(self) -> int | bool:
-        """
-        The `hashrate_24h` data from the `local_stratum` endpoint.
-
-        Returns:
-            int | bool: The `hashrate_24h` data from the `local_stratum` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_stratum_cache["hashrate_24h"])
-            return self._local_stratum_cache["hashrate_24h"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `hashrate_24h` data: {e}")
-            return False
+    def local_stratum_hashrate_24h(self):
+        return self._get_data_from_cache(self._local_stratum_cache, ["hashrate_24h"])
     
     @property
-    def local_stratum_total_hashes(self) -> int | bool:
-        """
-        The `total_hashes` data from the `local_stratum` endpoint.
-
-        Returns:
-            int | bool: The `total_hashes` data from the `local_stratum` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_stratum_cache["total_hashes"])
-            return self._local_stratum_cache["total_hashes"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `total_hashes` data: {e}")
-            return False
+    def local_stratum_total_hashes(self):
+        return self._get_data_from_cache(self._local_stratum_cache, ["total_hashes"])
     
     @property
-    def local_stratum_shares_found(self) -> int | bool:
-        """
-        The `shares_found` data from the `local_stratum` endpoint.
-
-        Returns:
-            int | bool: The `shares_found` data from the `local_stratum` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_stratum_cache["shares_found"])
-            return self._local_stratum_cache["shares_found"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `shares_found` data: {e}")
-            return False
+    def local_stratum_shares_found(self):
+        return self._get_data_from_cache(self._local_stratum_cache, ["shares_found"])
     
     @property
-    def local_stratum_shares_failed(self) -> int | bool:
-        """
-        The `shares_failed` data from the `local_stratum` endpoint.
-
-        Returns:
-            int | bool: The `shares_failed` data from the `local_stratum` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_stratum_cache["shares_failed"])
-            return self._local_stratum_cache["shares_failed"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `shares_failed` data: {e}")
-            return False
+    def local_stratum_shares_failed(self):
+        return self._get_data_from_cache(self._local_stratum_cache, ["shares_failed"])
     
     @property
-    def local_stratum_average_effort(self) -> int | bool:
-        """
-        The `average_effort` data from the `local_stratum` endpoint.
-
-        Returns:
-            int | bool: The `average_effort` data from the `local_stratum` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_stratum_cache["average_effort"])
-            return self._local_stratum_cache["average_effort"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `average_effort` data: {e}")
-            return False
+    def local_stratum_average_effort(self):
+        return self._get_data_from_cache(self._local_stratum_cache, ["average_effort"])
     
     @property
-    def local_stratum_current_effort(self) -> int | bool:
-        """
-        The `current_effort` data from the `local_stratum` endpoint.
-
-        Returns:
-            int | bool: The `current_effort` data from the `local_stratum` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_stratum_cache["current_effort"])
-            return self._local_stratum_cache["current_effort"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `current_effort` data: {e}")
-            return False
+    def local_stratum_current_effort(self):
+        return self._get_data_from_cache(self._local_stratum_cache, ["current_effort"])
     
     @property
-    def local_stratum_connections(self) -> int | bool:
-        """
-        The `connections` data from the `local_stratum` endpoint.
-
-        Returns:
-            int | bool: The `connections` data from the `local_stratum` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_stratum_cache["connections"])
-            return self._local_stratum_cache["connections"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `connections` data: {e}")
-            return False
+    def local_stratum_connections(self):
+        return self._get_data_from_cache(self._local_stratum_cache, ["connections"])
     
     @property
-    def local_stratum_incoming_connections(self) -> int | bool:
-        """
-        The `incoming_connections` data from the `local_stratum` endpoint.
-
-        Returns:
-            int | bool: The `incoming_connections` data from the `local_stratum` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_stratum_cache["incoming_connections"])
-            return self._local_stratum_cache["incoming_connections"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `incoming_connections` data: {e}")
-            return False
+    def local_stratum_incoming_connections(self):
+        return self._get_data_from_cache(self._local_stratum_cache, ["incoming_connections"])
     
     @property
-    def local_stratum_block_reward_share_percent(self) -> int | bool:
-        """
-        The `block_reward_share_percent` data from the `local_stratum` endpoint.
-
-        Returns:
-            int | bool: The `block_reward_share_percent` data from the `local_stratum` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._local_stratum_cache["block_reward_share_percent"])
-            return self._local_stratum_cache["block_reward_share_percent"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `block_reward_share_percent` data: {e}")
-            return False
+    def local_stratum_block_reward_share_percent(self):
+        return self._get_data_from_cache(self._local_stratum_cache, ["block_reward_share_percent"])
     
     @property
-    def local_stratum_workers_full(self) -> list | bool:
-        """
-        The full version of the `workers` data from the `local_stratum` endpoint.
-
-        Returns:
-            list | bool: The `workers_full` data from the `local_stratum` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._workers_full_cache)
-            return self._workers_full_cache
-        except Exception as e:
-            log.error(f"An error occurred fetching the `workers_full` data: {e}")
-            return False
+    def local_stratum_workers_full(self):
+        return self._get_data_from_cache(self._workers_full_cache, [])
 
     @property
-    def local_stratum_workers(self) -> list | bool:
-        """
-        The minimal version of the `workers` data from the `local_stratum` endpoint.
-
-        Returns:
-            list | bool: The `workers` data from the `local_stratum` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._workers_cache)
-            return self._workers_cache
-        except Exception as e:
-            log.error(f"An error occurred fetching the `workers` data: {e}")
-            return False
+    def local_stratum_workers(self):
+        return self._get_data_from_cache(self._workers_cache, [])
     
     @property
-    def network_stats_difficulty(self) -> int | bool:
-        """
-        The `difficulty` data from the `network_stats` endpoint.
-
-        Returns:
-            int | bool: The `difficulty` data from the `network_stats` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._network_stats_cache["difficulty"])
-            return self._network_stats_cache["difficulty"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `difficulty` data: {e}")
-            return False
+    def network_stats_difficulty(self):
+        return self._get_data_from_cache(self._network_stats_cache, ["difficulty"])
     
     @property
-    def network_stats_hash(self) -> str | bool:
-        """
-        The `hash` data from the `network_stats` endpoint.
-
-        Returns:
-            str | bool: The `hash` data from the `network_stats` endpoint, False otherwise
-        """
-
-        try:
-            log.debug(self._network_stats_cache["hash"])
-            return self._network_stats_cache["hash"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `hash` data: {e}")
-            return False
+    def network_stats_hash(self):
+        return self._get_data_from_cache(self._network_stats_cache, ["hash"])
     
     @property
-    def network_stats_height(self) -> int | bool:
-        """
-        The `height` data from the `network_stats` endpoint.
-
-        Returns:
-            int | bool: The `height` data from the `network_stats` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._network_stats_cache["height"])
-            return self._network_stats_cache["height"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `height` data: {e}")
-            return False
+    def network_stats_height(self):
+        return self._get_data_from_cache(self._network_stats_cache, ["height"])
     
     @property
-    def network_stats_reward(self) -> int | bool:
-        """
-        The `reward` data from the `network_stats` endpoint.
-
-        Returns:
-            int | bool: The `reward` data from the `network_stats` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._network_stats_cache["reward"])
-            return self._network_stats_cache["reward"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `reward` data: {e}")
-            return False
+    def network_stats_reward(self):
+        return self._get_data_from_cache(self._network_stats_cache, ["reward"])
     
     @property
-    def network_stats_timestamp(self) -> int | bool:
-        """
-        The `timestamp` data from the `network_stats` endpoint.
-
-        Returns:
-            int | bool: The `timestamp` data from the `network_stats` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._network_stats_cache["timestamp"])
-            return self._network_stats_cache["timestamp"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `timestamp` data: {e}")
-            return False
+    def network_stats_timestamp(self):
+        return self._get_data_from_cache(self._network_stats_cache, ["ts"])
     
     @property
-    def pool_blocks_heights(self) -> list | bool:
-        """
-        The `height` data from the `pool_blocks` endpoint.
-
-        Returns:
-            list | bool: The `height` data from the `pool_blocks` endpoint, False otherwise
-        """
+    def pool_blocks_heights(self):
+        heights = []
         try:
-            heights = []
-            for i in self._pool_blocks_cache:
-                heights.append(self._pool_blocks_cache[i]["height"])
-            log.debug(heights)
+            pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [])
+            for i in pool_blocks:
+                heights.append(pool_blocks[i]["height"])
             return heights
         except Exception as e:
-            log.error(f"An error occurred fetching the `heights` data: {e}")
-            return False
+            return "N/A"
     
     @property
-    def pool_blocks_hashes(self) -> list | bool:
-        """
-        The `hash` data from the `pool_blocks` endpoint.
-
-        Returns:
-            list | bool: The `hash` data from the `pool_blocks` endpoint, False otherwise
-        """
+    def pool_blocks_hashes(self):
+        hashes = []
         try:
-            hashes = []
-            for i in self._pool_blocks_cache:
-                hashes.append(self._pool_blocks_cache[i]["hash"])
-            log.debug(hashes)
+            pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [])
+            for i in pool_blocks:
+                hashes.append(pool_blocks[i]["hash"])
             return hashes
         except Exception as e:
-            log.error(f"An error occurred fetching the `hashes` data: {e}")
-            return False
+            return "N/A"
     
     @property
-    def pool_blocks_difficulties(self) -> list | bool:
-        """
-        The `difficulty` data from the `pool_blocks` endpoint.
-
-        Returns:
-            list | bool: The `difficulty` data from the `pool_blocks` endpoint, False otherwise
-        """
+    def pool_blocks_difficulties(self):
+        difficulties = []
         try:
-            difficulties = []
-            for i in self._pool_blocks_cache:
-                difficulties.append(self._pool_blocks_cache[i]["difficulty"])
-            log.debug(difficulties)
+            pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [])
+            for i in pool_blocks:
+                difficulties.append(pool_blocks[i]["difficulty"])
             return difficulties
         except Exception as e:
-            log.error(f"An error occurred fetching the `difficulties` data: {e}")
-            return False
+            return "N/A"
     
     @property
-    def pool_blocks_total_hashes(self) -> list | bool:
-        """
-        The `total_hashes` data from the `pool_blocks` endpoint.
-
-        Returns:
-            list | bool: The `total_hashes` data from the `pool_blocks` endpoint, False otherwise
-        """
+    def pool_blocks_total_hashes(self):
+        total_hashes = []
         try:
-            total_hashes = []
-            for i in self._pool_blocks_cache:
-                total_hashes.append(self._pool_blocks_cache[i]["totalHashes"])
-            log.debug(total_hashes)
+            pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [])
+            for i in pool_blocks:
+                total_hashes.append(pool_blocks[i]["totalHashes"])
             return total_hashes
         except Exception as e:
-            log.error(f"An error occurred fetching the `total_hashes` data: {e}")
-            return False
+            return "N/A"
     
     @property
-    def pool_blocks_timestamps(self) -> list | bool:
-        """
-        The `timestamp` data from the `pool_blocks` endpoint.
-
-        Returns:
-            list | bool: The `timestamp` data from the `pool_blocks` endpoint, False otherwise
-        """
+    def pool_blocks_timestamps(self):
+        timestamps = []
         try:
-            timestamps = []
-            for i in self._pool_blocks_cache:
-                timestamps.append(self._pool_blocks_cache[i]["ts"])
-            log.debug(timestamps)
+            pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [])
+            for i in pool_blocks:
+                timestamps.append(pool_blocks[i]["ts"])
             return timestamps
         except Exception as e:
-            log.error(f"An error occurred fetching the `timestamps` data: {e}")
-            return False
+            return "N/A"
     
     @property
-    def pool_stats_payout_type(self) -> str | bool:
-        """
-        The `payout_type` data from the `pool_stats` endpoint.
-
-        Returns:
-            str | bool: The `payout_type` data from the `pool_stats` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._pool_stats_cache["pool_list"][0])
-            return self._pool_stats_cache["pool_list"][0]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `payout_type` data: {e}")
-            return False
+    def pool_stats_payout_type(self):
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_list", 0])
     
     @property
-    def pool_stats_hash_rate(self) -> int | bool:
-        """
-        The `hashrate` data from the `pool_stats` endpoint.
-
-        Returns:
-            int | bool: The `hashrate` data from the `pool_stats` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._pool_stats_cache["pool_statistics"]["hashRate"])
-            return self._pool_stats_cache["pool_statistics"]["hashRate"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `hash_rate` data: {e}")
-            return False
+    def pool_stats_hash_rate(self):
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "hashRate"])
     
     @property
-    def pool_stats_miners(self) -> int | bool:
-        """
-        The `miners` data from the `pool_stats` endpoint.
-
-        Returns:
-            int | bool: The `miners` data from the `pool_stats` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._pool_stats_cache["pool_statistics"]["miners"])
-            return self._pool_stats_cache["pool_statistics"]["miners"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `miners` data: {e}")
-            return False
+    def pool_stats_miners(self):
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "miners"])
     
     @property
-    def pool_stats_total_hashes(self) -> int | bool:
-        """
-        The `total_hashes` data from the `pool_stats` endpoint.
-
-        Returns:
-            int | bool: The `total_hashes` data from the `pool_stats` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._pool_stats_cache["pool_statistics"]["totalHashes"])
-            return self._pool_stats_cache["pool_statistics"]["totalHashes"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `total_hashes` data: {e}")
-            return False
+    def pool_stats_total_hashes(self):
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "totalHashes"])
     
     @property
-    def pool_stats_last_block_found_time(self) -> int | bool:
-        """
-        The `last_block_found_time` data from the `pool_stats` endpoint.
-
-        Returns:
-            int | bool: The `last_block_found_time` data from the `pool_stats` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._pool_stats_cache["pool_statistics"]["lastBlockFoundTime"])
-            return self._pool_stats_cache["pool_statistics"]["lastBlockFoundTime"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `last_block_found_time` data: {e}")
-            return False
+    def pool_stats_last_block_found_time(self):
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "lastBlockFoundTime"])
     
     @property
-    def pool_stats_last_block_found(self) -> int | bool:
-        """
-        The `last_block_found` data from the `pool_stats` endpoint.
-
-        Returns:
-            int | bool: The `last_block_found` data from the `pool_stats` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._pool_stats_cache["pool_statistics"]["lastBlockFound"])
-            return self._pool_stats_cache["pool_statistics"]["lastBlockFound"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `last_block_found` data: {e}")
-            return False
+    def pool_stats_last_block_found(self):
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "lastBlockFound"])
     
     @property
-    def pool_stats_total_blocks_found(self) -> int | bool:
-        """
-        The `total_blocks_found` data from the `pool_stats` endpoint.
-
-        Returns:
-            int | bool: The `total_blocks_found` data from the `pool_stats` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._pool_stats_cache["pool_statistics"]["totalBlocksFound"])
-            return self._pool_stats_cache["pool_statistics"]["totalBlocksFound"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `total_blocks_found` data: {e}")
-            return False
+    def pool_stats_total_blocks_found(self):
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "totalBlocksFound"])
     
     @property
-    def pool_stats_pplns_weight(self) -> int | bool:
-        """
-        The `pplns_weight` data from the `pool_stats` endpoint.
-
-        Returns:
-            int | bool: The `pplns_weight` data from the `pool_stats` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._pool_stats_cache["pool_statistics"]["pplnsWeight"])
-            return self._pool_stats_cache["pool_statistics"]["pplnsWeight"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `pplns_weight` data: {e}")
-            return False
+    def pool_stats_pplns_weight(self):
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "pplnsWeight"])
     
     @property
-    def pool_stats_pplns_window_size(self) -> int | bool:
-        """
-        The `pplns_window_size` data from the `pool_stats` endpoint.
-
-        Returns:
-            int | bool: The `pplns_window_size` data from the `pool_stats` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._pool_stats_cache["pool_statistics"]["pplnsWindowSize"])
-            return self._pool_stats_cache["pool_statistics"]["pplnsWindowSize"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `pplns_window_size` data: {e}")
-            return False
+    def pool_stats_pplns_window_size(self):
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "pplnsWindowSize"])
     
     @property
-    def pool_stats_sidechain_difficulty(self) -> int | bool:
-        """
-        The `sidechain_difficulty` data from the `pool_stats` endpoint.
-
-        Returns:
-            int | bool: The `sidechain_difficulty` data from the `pool_stats` endpoint, False otherwise
-        """
-        
-        try:
-            log.debug(self._pool_stats_cache["pool_statistics"]["sidechainDifficulty"])
-            return self._pool_stats_cache["pool_statistics"]["sidechainDifficulty"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `sidechain_difficulty` data: {e}")
-            return False
+    def pool_stats_sidechain_difficulty(self):
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "sidechainDifficulty"])
     
     @property
-    def pool_stats_sidechain_height(self) -> int | bool:
-        """
-        The `sidechain_height` data from the `pool_stats` endpoint.
-
-        Returns:
-            int | bool: The `sidechain_height` data from the `pool_stats` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._pool_stats_cache["pool_statistics"]["sidechainHeight"])
-            return self._pool_stats_cache["pool_statistics"]["sidechainHeight"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `sidechain_height` data: {e}")
-            return False
+    def pool_stats_sidechain_height(self):
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "sidechainHeight"])
     
     @property
-    def stats_mod_config(self) -> dict | bool:
-        """
-        The `config` data from the `stats_mod` endpoint.
-
-        Returns:
-            int | bool: The `config` data from the `stats_mod` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._stats_mod_cache["config"])
-            return self._stats_mod_cache["config"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `config` data: {e}")
-            return False
+    def stats_mod_config(self):
+        return self._get_data_from_cache(self._stats_mod_cache, ["config"])
     
     @property
-    def stats_mod_ports(self) -> int | bool:
-        """
-        The `ports` data from the `stats_mod` endpoint.
-
-        Returns:
-            int | bool: The `ports` data from the `stats_mod` endpoint, False otherwise
-        """
+    def stats_mod_ports(self):
+        ports = []
         try:
-            ports = []
-            for i in self._stats_mod_cache["config"]["ports"]:
-                ports.append(i["port"])
-            log.debug(ports)
+            config_ports = self._get_data_from_cache(self._stats_mod_cache, ["config", "ports"])
+            for i in config_ports:
+                ports.append(config_ports[i]["port"])
             return ports
         except Exception as e:
-            log.error(f"An error occurred fetching the `ports` data: {e}")
-            return False
+            return "N/A"
     
     @property
-    def stats_mod_tls(self) -> bool:
-        """
-        The `tls` data from the `stats_mod` endpoint.
-
-        Returns:
-            bool: The `tls` data from the `stats_mod` endpoint, False otherwise
-        """
+    def stats_mod_tls(self):
+        tls = []
         try:
-            tls = []
-            for i in self._stats_mod_cache["config"]["tls"]:
-                tls.append(i["port"])
-            log.debug(tls)
+            config_ports = self._get_data_from_cache(self._stats_mod_cache, ["config", "ports"])
+            for i in config_ports:
+                tls.append(config_ports[i]["tls"])
             return tls
         except Exception as e:
-            log.error(f"An error occurred fetching the `tls` data: {e}")
-            return False
+            return "N/A"
     
     @property
-    def stats_mod_fee(self) -> int | bool:
-        """
-        The `fee` data from the `stats_mod` endpoint.
-
-        Returns:
-            int | bool: The `fee` data from the `stats_mod` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._stats_mod_cache["config"]["fee"])
-            return self._stats_mod_cache["config"]["fee"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `fee` data: {e}")
-            return False
+    def stats_mod_fee(self):
+        return self._get_data_from_cache(self._stats_mod_cache, ["config", "fee"])
     
     @property
-    def stats_mod_min_payment_threshold(self) -> int | bool:
-        """
-        The `min_payment_threshold` data from the `stats_mod` endpoint.
-
-        Returns:
-            int | bool: The `min_payment_threshold` data from the `stats_mod` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._stats_mod_cache["config"]["minPaymentThreshold"])
-            return self._stats_mod_cache["config"]["minPaymentThreshold"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `min_payment_threshold` data: {e}")
-            return False
+    def stats_mod_min_payment_threshold(self):
+        return self._get_data_from_cache(self._stats_mod_cache, ["config", "minPaymentThreshold"])
     
     @property
-    def stats_mod_network_height(self) -> int | bool:
-        """
-        The `network_height` data from the `stats_mod` endpoint.
-
-        Returns:
-            int | bool: The `network_height` data from the `stats_mod` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._stats_mod_cache["config"]["network"]["height"])
-            return self._stats_mod_cache["config"]["network"]["height"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `network_height` data: {e}")
-            return False
+    def stats_mod_network_height(self):
+        return self._get_data_from_cache(self._stats_mod_cache, ["network", "height"])
     
     @property
-    def stats_mod_last_block_found(self) -> str | bool:
-        """
-        The `last_block_found` data from the `stats_mod` endpoint.
-
-        Returns:
-            str | bool: The `last_block_found` data from the `stats_mod` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._stats_mod_cache["config"]["pool"]["stats"]["lastBlockFound"])
-            return self._stats_mod_cache["config"]["pool"]["stats"]["lastBlockFound"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `last_block_found` data: {e}")
-            return False
+    def stats_mod_last_block_found(self):
+        return self._get_data_from_cache(self._stats_mod_cache, ["pool", "stats", "lastBlockFound"])
     
     @property
-    def stats_mod_blocks(self) -> list | bool:
-        """
-        The `blocks` data from the `stats_mod` endpoint.
-
-        Returns:
-            list | bool: The `blocks` data from the `stats_mod` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._stats_mod_cache["config"]["pool"]["stats"]["blocks"])
-            return self._stats_mod_cache["config"]["pool"]["stats"]["blocks"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `blocks` data: {e}")
-            return False
+    def stats_mod_blocks(self):
+        return self._get_data_from_cache(self._stats_mod_cache, ["pool", "blocks"])
     
     @property
-    def stats_mod_miners(self) -> int | bool:
-        """
-        The `miners` data from the `stats_mod` endpoint.
-
-        Returns:
-            int | bool: The `miners` data from the `stats_mod` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._stats_mod_cache["config"]["pool"]["stats"]["miners"])
-            return self._stats_mod_cache["config"]["pool"]["stats"]["miners"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `miners` data: {e}")
-            return False
+    def stats_mod_miners(self):
+        return self._get_data_from_cache(self._stats_mod_cache, ["pool", "miners"])
     
     @property
-    def stats_mod_hashrate(self) -> int | bool:
-        """
-        The `hashrate` data from the `stats_mod` endpoint.
-
-        Returns:
-            int | bool: The `hashrate` data from the `stats_mod` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._stats_mod_cache["config"]["pool"]["stats"]["hashrate"])
-            return self._stats_mod_cache["config"]["pool"]["stats"]["hashrate"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `hashrate` data: {e}")
-            return False
+    def stats_mod_hashrate(self):
+        return self._get_data_from_cache(self._stats_mod_cache, ["pool", "hashrate"])
     
     @property
-    def stats_mod_round_hashes(self) -> int | bool:
-        """
-        The `round_hashes` data from the `stats_mod` endpoint.
-
-        Returns:
-            int | bool: The `round_hashes` data from the `stats_mod` endpoint, False otherwise
-        """
-        try:
-            log.debug(self._stats_mod_cache["config"]["pool"]["stats"]["roundHashes"])
-            return self._stats_mod_cache["config"]["pool"]["stats"]["roundHashes"]
-        except Exception as e:
-            log.error(f"An error occurred fetching the `round_hashes` data: {e}")
-            return False
+    def stats_mod_round_hashes(self):
+        return self._get_data_from_cache(self._stats_mod_cache, ["pool", "roundHashes"])
 
 # Define the public interface of the module
 __all__ = ["P2PoolAPI"]
