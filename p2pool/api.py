@@ -34,10 +34,11 @@ class P2PoolAPI:
             api_path (str): The base path to the API data directory or URL.
             is_remote (bool): Indicates if the API path is a remote URL.
         """
-        if not self._validate_api_path(api_path, is_remote):
+        self._api_path = Path(api_path).resolve() if not is_remote else api_path
+        
+        if not self._validate_api_path(self._api_path, is_remote):
             raise ValueError("Invalid API path provided.")
         
-        self._api_path = Path(api_path).resolve() if not is_remote else api_path
         self._is_remote = is_remote
         self._local_console_cache = {}
         self._local_p2p_cache = {}
