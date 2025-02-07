@@ -222,135 +222,333 @@ class P2PoolAPI:
             raise P2PoolAPIError(e, traceback.format_exc(), f"An error occurred fetching the latest data: {e}") from e
 
     @property
-    def local_console(self):
+    def local_console(self) -> dict:
+        """
+        Returns the local console data.
+
+        Returns:
+            dict: The local console data.
+        """
         return self._get_data_from_cache(self._local_console_cache, [])
 
     @property
-    def local_p2p(self):
+    def local_p2p(self) -> dict:
+        """
+        Returns the local P2P data.
+
+        Returns:
+            dict: The local P2P data.
+        """
         return self._get_data_from_cache(self._local_p2p_cache, [])
 
     @property
-    def local_stratum(self):
+    def local_stratum(self) -> dict:
+        """
+        Returns the local stratum data.
+
+        Returns:
+            dict: The local stratum data.
+        """
         return self._get_data_from_cache(self._local_stratum_cache, [])
 
     @property
-    def network_stats(self):
+    def network_stats(self) -> dict:
+        """
+        Returns the network stats data.
+
+        Returns:
+            dict: The network stats data.
+        """
         return self._get_data_from_cache(self._network_stats_cache, [])
 
     @property
-    def pool_blocks(self):
+    def pool_blocks(self) -> dict:
+        """
+        Returns the pool blocks data.
+
+        Returns:
+            dict: The pool blocks data.
+        """
         return self._get_data_from_cache(self._pool_blocks_cache, [])
 
     @property
-    def pool_stats(self):
+    def pool_stats(self) -> dict:
+        """
+        Returns the pool stats data.
+
+        Returns:
+            dict: The pool stats data.
+        """
         return self._get_data_from_cache(self._pool_stats_cache, [])
 
     @property
-    def stats_mod(self):
+    def stats_mod(self) -> dict:
+        """
+        Returns the stats mod data.
+
+        Returns:
+            dict: The stats mod data.
+        """
         return self._get_data_from_cache(self._stats_mod_cache, [])
-    
+
     @property
-    def local_console_mode(self):
+    def local_console_mode(self) -> str:
+        """
+        Returns the local console mode.
+
+        Returns:
+            str: The local console mode.
+        """
         return self._get_data_from_cache(self._local_console_cache, ["mode"])
-    
+
     @property
-    def local_console_tcp_port(self):
+    def local_console_tcp_port(self) -> int:
+        """
+        Returns the local console TCP port.
+
+        Returns:
+            int: The local console TCP port.
+        """
         return self._get_data_from_cache(self._local_console_cache, ["tcp_port"])
-    
+
     @property
-    def local_p2p_connections(self):
+    def local_p2p_connections(self) -> int:
+        """
+        Returns the number of local P2P connections.
+
+        Returns:
+            int: The number of local P2P connections.
+        """
         return self._get_data_from_cache(self._local_p2p_cache, ["connections"])
-    
+
     @property
-    def local_p2p_incoming_connections(self):
+    def local_p2p_incoming_connections(self) -> int:
+        """
+        Returns the number of local P2P incoming connections.
+
+        Returns:
+            int: The number of local P2P incoming connections.
+        """
         return self._get_data_from_cache(self._local_p2p_cache, ["incoming_connections"])
-    
+
     @property
-    def local_p2p_peer_list_size(self):
+    def local_p2p_peer_list_size(self) -> int:
+        """
+        Returns the size of the local P2P peer list.
+
+        Returns:
+            int: The size of the local P2P peer list.
+        """
         return self._get_data_from_cache(self._local_p2p_cache, ["peer_list_size"])
-    
+
     @property
-    def local_p2p_peers(self):
+    def local_p2p_peers(self) -> list:
+        """
+        Returns the list of local P2P peers.
+
+        Returns:
+            list: The list of local P2P peers.
+        """
         return self._get_data_from_cache(self._local_p2p_cache, ["peers"])
-    
+
     @property
-    def local_p2p_uptime(self):
+    def local_p2p_uptime(self) -> int:
+        """
+        Returns the local P2P uptime.
+
+        Returns:
+            int: The local P2P uptime.
+        """
         return self._get_data_from_cache(self._local_p2p_cache, ["uptime"])
-    
+
     @property
-    def local_stratum_hashrate_15m(self):
+    def local_stratum_hashrate_15m(self) -> int:
+        """
+        Returns the local stratum hashrate for the last 15 minutes.
+
+        Returns:
+            int: The local stratum hashrate for the last 15 minutes.
+        """
         return self._get_data_from_cache(self._local_stratum_cache, ["hashrate_15m"])
-    
+
     @property
-    def local_stratum_hashrate_1h(self):
+    def local_stratum_hashrate_1h(self) -> int:
+        """
+        Returns the local stratum hashrate for the last hour.
+
+        Returns:
+            int: The local stratum hashrate for the last hour.
+        """
         return self._get_data_from_cache(self._local_stratum_cache, ["hashrate_1h"])
-    
+
     @property
-    def local_stratum_hashrate_24h(self):
+    def local_stratum_hashrate_24h(self) -> int:
+        """
+        Returns the local stratum hashrate for the last 24 hours.
+
+        Returns:
+            int: The local stratum hashrate for the last 24 hours.
+        """
         return self._get_data_from_cache(self._local_stratum_cache, ["hashrate_24h"])
-    
+
     @property
-    def local_stratum_total_hashes(self):
+    def local_stratum_total_hashes(self) -> int:
+        """
+        Returns the total number of hashes for the local stratum.
+
+        Returns:
+            int: The total number of hashes for the local stratum.
+        """
         return self._get_data_from_cache(self._local_stratum_cache, ["total_hashes"])
-    
+
     @property
-    def local_stratum_shares_found(self):
+    def local_stratum_shares_found(self) -> int:
+        """
+        Returns the number of shares found by the local stratum.
+
+        Returns:
+            int: The number of shares found by the local stratum.
+        """
         return self._get_data_from_cache(self._local_stratum_cache, ["shares_found"])
-    
+
     @property
-    def local_stratum_shares_failed(self):
+    def local_stratum_shares_failed(self) -> int:
+        """
+        Returns the number of shares failed by the local stratum.
+
+        Returns:
+            int: The number of shares failed by the local stratum.
+        """
         return self._get_data_from_cache(self._local_stratum_cache, ["shares_failed"])
-    
+
     @property
-    def local_stratum_average_effort(self):
+    def local_stratum_average_effort(self) -> int:
+        """
+        Returns the average effort of the local stratum.
+
+        Returns:
+            int: The average effort of the local stratum.
+        """
         return self._get_data_from_cache(self._local_stratum_cache, ["average_effort"])
-    
+
     @property
-    def local_stratum_current_effort(self):
+    def local_stratum_current_effort(self) -> int:
+        """
+        Returns the current effort of the local stratum.
+
+        Returns:
+            int: The current effort of the local stratum.
+        """
         return self._get_data_from_cache(self._local_stratum_cache, ["current_effort"])
-    
+
     @property
-    def local_stratum_connections(self):
+    def local_stratum_connections(self) -> int:
+        """
+        Returns the number of connections to the local stratum.
+
+        Returns:
+            int: The number of connections to the local stratum.
+        """
         return self._get_data_from_cache(self._local_stratum_cache, ["connections"])
-    
+
     @property
-    def local_stratum_incoming_connections(self):
+    def local_stratum_incoming_connections(self) -> int:
+        """
+        Returns the number of incoming connections to the local stratum.
+
+        Returns:
+            int: The number of incoming connections to the local stratum.
+        """
         return self._get_data_from_cache(self._local_stratum_cache, ["incoming_connections"])
-    
+
     @property
-    def local_stratum_block_reward_share_percent(self):
+    def local_stratum_block_reward_share_percent(self) -> int:
+        """
+        Returns the block reward share percentage of the local stratum.
+
+        Returns:
+            int: The block reward share percentage of the local stratum.
+        """
         return self._get_data_from_cache(self._local_stratum_cache, ["block_reward_share_percent"])
-    
+
     @property
-    def local_stratum_workers_full(self):
+    def local_stratum_workers_full(self) -> list:
+        """
+        Returns the full list of workers for the local stratum.
+
+        Returns:
+            list: The full list of workers for the local stratum.
+        """
         return self._get_data_from_cache(self._workers_full_cache, [])
 
     @property
-    def local_stratum_workers(self):
+    def local_stratum_workers(self) -> list:
+        """
+        Returns the list of workers for the local stratum.
+
+        Returns:
+            list: The list of workers for the local stratum.
+        """
         return self._get_data_from_cache(self._workers_cache, [])
-    
+
     @property
-    def network_stats_difficulty(self):
+    def network_stats_difficulty(self) -> int:
+        """
+        Returns the network difficulty.
+
+        Returns:
+            int: The network difficulty.
+        """
         return self._get_data_from_cache(self._network_stats_cache, ["difficulty"])
-    
+
     @property
-    def network_stats_hash(self):
+    def network_stats_hash(self) -> str:
+        """
+        Returns the network hash.
+
+        Returns:
+            str: The network hash.
+        """
         return self._get_data_from_cache(self._network_stats_cache, ["hash"])
-    
+
     @property
-    def network_stats_height(self):
+    def network_stats_height(self) -> int:
+        """
+        Returns the network height.
+
+        Returns:
+            int: The network height.
+        """
         return self._get_data_from_cache(self._network_stats_cache, ["height"])
-    
+
     @property
-    def network_stats_reward(self):
+    def network_stats_reward(self) -> int:
+        """
+        Returns the network reward.
+
+        Returns:
+            int: The network reward.
+        """
         return self._get_data_from_cache(self._network_stats_cache, ["reward"])
-    
+
     @property
-    def network_stats_timestamp(self):
+    def network_stats_timestamp(self) -> int:
+        """
+        Returns the network timestamp.
+
+        Returns:
+            int: The network timestamp.
+        """
         return self._get_data_from_cache(self._network_stats_cache, ["ts"])
-    
+
     @property
-    def pool_blocks_heights(self):
+    def pool_blocks_heights(self) -> list[int]:
+        """
+        Returns the list of pool block heights.
+
+        Returns:
+            list[int]: The list of pool block heights.
+        """
         heights = []
         try:
             pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [])
@@ -359,9 +557,15 @@ class P2PoolAPI:
             return heights
         except Exception as e:
             return "N/A"
-    
+
     @property
-    def pool_blocks_hashes(self):
+    def pool_blocks_hashes(self) -> list[str]:
+        """
+        Returns the list of pool block hashes.
+
+        Returns:
+            list[str]: The list of pool block hashes.
+        """
         hashes = []
         try:
             pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [])
@@ -370,9 +574,15 @@ class P2PoolAPI:
             return hashes
         except Exception as e:
             return "N/A"
-    
+
     @property
-    def pool_blocks_difficulties(self):
+    def pool_blocks_difficulties(self) -> list[int]:
+        """
+        Returns the list of pool block difficulties.
+
+        Returns:
+            list[int]: The list of pool block difficulties.
+        """
         difficulties = []
         try:
             pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [])
@@ -381,9 +591,15 @@ class P2PoolAPI:
             return difficulties
         except Exception as e:
             return "N/A"
-    
+
     @property
-    def pool_blocks_total_hashes(self):
+    def pool_blocks_total_hashes(self) -> list[int]:
+        """
+        Returns the list of total hashes for pool blocks.
+
+        Returns:
+            list[int]: The list of total hashes for pool blocks.
+        """
         total_hashes = []
         try:
             pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [])
@@ -392,9 +608,15 @@ class P2PoolAPI:
             return total_hashes
         except Exception as e:
             return "N/A"
-    
+
     @property
-    def pool_blocks_timestamps(self):
+    def pool_blocks_timestamps(self) -> list[int]:
+        """
+        Returns the list of timestamps for pool blocks.
+
+        Returns:
+            list[int]: The list of timestamps for pool blocks.
+        """
         timestamps = []
         try:
             pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [])
@@ -403,57 +625,135 @@ class P2PoolAPI:
             return timestamps
         except Exception as e:
             return "N/A"
-    
+
     @property
-    def pool_stats_payout_type(self):
+    def pool_stats_payout_type(self) -> str:
+        """
+        Returns the pool stats payout type.
+
+        Returns:
+            str: The pool stats payout type.
+        """
         return self._get_data_from_cache(self._pool_stats_cache, ["pool_list", 0])
-    
+
     @property
-    def pool_stats_hash_rate(self):
+    def pool_stats_hash_rate(self) -> int:
+        """
+        Returns the pool stats hash rate.
+
+        Returns:
+            int: The pool stats hash rate.
+        """
         return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "hashRate"])
-    
+
     @property
-    def pool_stats_miners(self):
+    def pool_stats_miners(self) -> int:
+        """
+        Returns the number of miners in the pool stats.
+
+        Returns:
+            int: The number of miners in the pool stats.
+        """
         return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "miners"])
-    
+
     @property
-    def pool_stats_total_hashes(self):
+    def pool_stats_total_hashes(self) -> int:
+        """
+        Returns the total number of hashes in the pool stats.
+
+        Returns:
+            int: The total number of hashes in the pool stats.
+        """
         return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "totalHashes"])
-    
+
     @property
-    def pool_stats_last_block_found_time(self):
+    def pool_stats_last_block_found_time(self) -> int:
+        """
+        Returns the last block found time in the pool stats.
+
+        Returns:
+            int: The last block found time in the pool stats.
+        """
         return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "lastBlockFoundTime"])
-    
+
     @property
-    def pool_stats_last_block_found(self):
+    def pool_stats_last_block_found(self) -> int:
+        """
+        Returns the last block found in the pool stats.
+
+        Returns:
+            int: The last block found in the pool stats.
+        """
         return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "lastBlockFound"])
-    
+
     @property
-    def pool_stats_total_blocks_found(self):
+    def pool_stats_total_blocks_found(self) -> int:
+        """
+        Returns the total number of blocks found in the pool stats.
+
+        Returns:
+            int: The total number of blocks found in the pool stats.
+        """
         return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "totalBlocksFound"])
-    
+
     @property
-    def pool_stats_pplns_weight(self):
+    def pool_stats_pplns_weight(self) -> int:
+        """
+        Returns the PPLNS weight in the pool stats.
+
+        Returns:
+            int: The PPLNS weight in the pool stats.
+        """
         return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "pplnsWeight"])
-    
+
     @property
-    def pool_stats_pplns_window_size(self):
+    def pool_stats_pplns_window_size(self) -> int:
+        """
+        Returns the PPLNS window size in the pool stats.
+
+        Returns:
+            int: The PPLNS window size in the pool stats.
+        """
         return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "pplnsWindowSize"])
-    
+
     @property
-    def pool_stats_sidechain_difficulty(self):
+    def pool_stats_sidechain_difficulty(self) -> int:
+        """
+        Returns the sidechain difficulty in the pool stats.
+
+        Returns:
+            int: The sidechain difficulty in the pool stats.
+        """
         return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "sidechainDifficulty"])
-    
+
     @property
-    def pool_stats_sidechain_height(self):
+    def pool_stats_sidechain_height(self) -> int:
+        """
+        Returns the sidechain height in the pool stats.
+
+        Returns:
+            int: The sidechain height in the pool stats.
+        """
         return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "sidechainHeight"])
-    
+
     @property
-    def stats_mod_config(self):
+    def stats_mod_config(self) -> dict:
+        """
+        Returns the stats mod config.
+
+        Returns:
+            dict: The stats mod config.
+        """
         return self._get_data_from_cache(self._stats_mod_cache, ["config"])
-    
+
     @property
-    def stats_mod_ports(self):
+    def stats_mod_ports(self) -> list[int]:
+        """
+        Returns the list of ports in the stats mod config.
+
+        Returns:
+            list[int]: The list of ports in the stats mod config.
+        """
         ports = []
         try:
             config_ports = self._get_data_from_cache(self._stats_mod_cache, ["config", "ports"])
@@ -462,9 +762,15 @@ class P2PoolAPI:
             return ports
         except Exception as e:
             return "N/A"
-    
+
     @property
-    def stats_mod_tls(self):
+    def stats_mod_tls(self) -> list[bool]:
+        """
+        Returns the list of TLS settings in the stats mod config.
+
+        Returns:
+            list[bool]: The list of TLS settings in the stats mod config.
+        """
         tls = []
         try:
             config_ports = self._get_data_from_cache(self._stats_mod_cache, ["config", "ports"])
@@ -473,37 +779,85 @@ class P2PoolAPI:
             return tls
         except Exception as e:
             return "N/A"
-    
+
     @property
-    def stats_mod_fee(self):
+    def stats_mod_fee(self) -> int:
+        """
+        Returns the fee in the stats mod config.
+
+        Returns:
+            int: The fee in the stats mod config.
+        """
         return self._get_data_from_cache(self._stats_mod_cache, ["config", "fee"])
-    
+
     @property
-    def stats_mod_min_payment_threshold(self):
+    def stats_mod_min_payment_threshold(self) -> int:
+        """
+        Returns the minimum payment threshold in the stats mod config.
+
+        Returns:
+            int: The minimum payment threshold in the stats mod config.
+        """
         return self._get_data_from_cache(self._stats_mod_cache, ["config", "minPaymentThreshold"])
-    
+
     @property
-    def stats_mod_network_height(self):
+    def stats_mod_network_height(self) -> int:
+        """
+        Returns the network height in the stats mod data.
+
+        Returns:
+            int: The network height in the stats mod data.
+        """
         return self._get_data_from_cache(self._stats_mod_cache, ["network", "height"])
-    
+
     @property
-    def stats_mod_last_block_found(self):
+    def stats_mod_last_block_found(self) -> str:
+        """
+        Returns the last block found in the stats mod data.
+
+        Returns:
+            str: The last block found in the stats mod data.
+        """
         return self._get_data_from_cache(self._stats_mod_cache, ["pool", "stats", "lastBlockFound"])
-    
+
     @property
-    def stats_mod_blocks(self):
+    def stats_mod_blocks(self) -> list:
+        """
+        Returns the list of blocks in the stats mod data.
+
+        Returns:
+            list: The list of blocks in the stats mod data.
+        """
         return self._get_data_from_cache(self._stats_mod_cache, ["pool", "blocks"])
-    
+
     @property
-    def stats_mod_miners(self):
+    def stats_mod_miners(self) -> int:
+        """
+        Returns the number of miners in the stats mod data.
+
+        Returns:
+            int: The number of miners in the stats mod data.
+        """
         return self._get_data_from_cache(self._stats_mod_cache, ["pool", "miners"])
-    
+
     @property
-    def stats_mod_hashrate(self):
+    def stats_mod_hashrate(self) -> int:
+        """
+        Returns the hashrate in the stats mod data.
+
+        Returns:
+            int: The hashrate in the stats mod data.
+        """
         return self._get_data_from_cache(self._stats_mod_cache, ["pool", "hashrate"])
-    
+
     @property
-    def stats_mod_round_hashes(self):
+    def stats_mod_round_hashes(self) -> int:
+        """
+        Returns the round hashes in the stats mod data.
+
+        Returns:
+            int: The round hashes in the stats mod data.
+        """
         return self._get_data_from_cache(self._stats_mod_cache, ["pool", "roundHashes"])
 
 # Define the public interface of the module
