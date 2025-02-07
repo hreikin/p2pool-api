@@ -4,7 +4,7 @@ P2Pool API interaction library.
 This module provides the `P2PoolAPI` class for interacting with various data sources in a P2Pool miner API.
 """
 
-import json, logging
+import json, logging, requests
 from pathlib import Path
 
 log = logging.getLogger("p2pool.api")
@@ -23,14 +23,16 @@ class P2PoolAPI:
         _stats_mod (dict): Data retrieved from the `stats_mod` API endpoint.
     """
 
-    def __init__(self, api_path: str):
+    def __init__(self, api_path: str, is_remote: bool = False):
         """
         Initializes a P2PoolAPI instance.
 
         Args:
-            api_path (str): The base path to the API data directory.
+            api_path (str): The base path to the API data directory or URL.
+            is_remote (bool): Indicates if the API path is a remote URL.
         """
-        self._api_path = Path(api_path).resolve()
+        self._api_path = Path(api_path).resolve() if not is_remote else api_path
+        self._is_remote = is_remote
         self._local_console = {}
         self._local_p2p = {}
         self._local_stratum = {}
@@ -42,6 +44,28 @@ class P2PoolAPI:
         self._stats_mod = {}
         self.get_all_data()
 
+    def _fetch_data(self, endpoint: str) -> dict | bool:
+        """
+        Fetches data from the specified endpoint.
+
+        Args:
+            endpoint (str): The endpoint to fetch data from.
+
+        Returns:
+            dict | bool: The fetched data, or False if an error occurred.
+        """
+        try:
+            if self._is_remote:
+                response = requests.get(f"{self._api_path}/{endpoint}")
+                response.raise_for_status()
+                return response.json()
+            else:
+                with open(f"{self._api_path}/{endpoint}", "r") as reader:
+                    return json.loads(reader.read())
+        except Exception as e:
+            log.error(f"An error occurred fetching data from `{endpoint}`: {e}")
+            return False
+
     def get_local_console(self) -> bool:
         """
         Loads data from the `local/console` API endpoint.
@@ -49,13 +73,8 @@ class P2PoolAPI:
         Returns:
             bool: True if the operation was successful, False otherwise.
         """
-        try:
-            with open(f"{self._api_path}/local/console", "r") as reader:
-                self._local_console = json.loads(reader.read())
-            return True
-        except Exception as e:
-            print(f"An error occurred opening the `local_console` file: {e}")
-            return False
+        self._local_console = self._fetch_data("local/console")
+        return bool(self._local_console)
 
     def get_local_p2p(self) -> bool:
         """
@@ -64,13 +83,8 @@ class P2PoolAPI:
         Returns:
             bool: True if the operation was successful, False otherwise.
         """
-        try:
-            with open(f"{self._api_path}/local/p2p", "r") as reader:
-                self._local_p2p = json.loads(reader.read())
-            return True
-        except Exception as e:
-            print(f"An error occurred opening the `local_p2p` file: {e}")
-            return False
+        self._local_p2p = self._fetch_data("local/p2p")
+        return bool(self._local_p2p)
 
     def get_local_stratum(self) -> bool:
         """
@@ -79,9 +93,8 @@ class P2PoolAPI:
         Returns:
             bool: True if the operation was successful, False otherwise.
         """
-        try:
-            with open(f"{self._api_path}/local/stratum", "r") as reader:
-                self._local_stratum = json.loads(reader.read())
+        self._local_stratum = self._fetch_data("local/stratum")
+        if self._local_stratum:
             self._workers_full = self._local_stratum["workers"]
             self._workers = []
             for w in self._workers_full:
@@ -89,9 +102,7 @@ class P2PoolAPI:
                 self._workers.append(w_list)
             self._workers = sorted(self._workers, key=lambda x: int(x[3]), reverse=True)
             return True
-        except Exception as e:
-            print(f"An error occurred opening the `local_stratum` file: {e}")
-            return False
+        return False
 
     def get_network_stats(self) -> bool:
         """
@@ -100,13 +111,8 @@ class P2PoolAPI:
         Returns:
             bool: True if the operation was successful, False otherwise.
         """
-        try:
-            with open(f"{self._api_path}/network/stats", "r") as reader:
-                self._network_stats = json.loads(reader.read())
-            return True
-        except Exception as e:
-            print(f"An error occurred opening the `network_stats` file: {e}")
-            return False
+        self._network_stats = self._fetch_data("network/stats")
+        return bool(self._network_stats)
 
     def get_pool_blocks(self) -> bool:
         """
@@ -115,13 +121,8 @@ class P2PoolAPI:
         Returns:
             bool: True if the operation was successful, False otherwise.
         """
-        try:
-            with open(f"{self._api_path}/pool/blocks", "r") as reader:
-                self._pool_blocks = json.loads(reader.read())
-            return True
-        except Exception as e:
-            print(f"An error occurred opening the `pool_blocks` file: {e}")
-            return False
+        self._pool_blocks = self._fetch_data("pool/blocks")
+        return bool(self._pool_blocks)
 
     def get_pool_stats(self) -> bool:
         """
@@ -130,13 +131,8 @@ class P2PoolAPI:
         Returns:
             bool: True if the operation was successful, False otherwise.
         """
-        try:
-            with open(f"{self._api_path}/pool/stats", "r") as reader:
-                self._pool_stats = json.loads(reader.read())
-            return True
-        except Exception as e:
-            print(f"An error occurred opening the `pool_stats` file: {e}")
-            return False
+        self._pool_stats = self._fetch_data("pool/stats")
+        return bool(self._pool_stats)
 
     def get_stats_mod(self) -> bool:
         """
@@ -145,13 +141,8 @@ class P2PoolAPI:
         Returns:
             bool: True if the operation was successful, False otherwise.
         """
-        try:
-            with open(f"{self._api_path}/stats_mod", "r") as reader:
-                self._stats_mod = json.loads(reader.read())
-            return True
-        except Exception as e:
-            print(f"An error occurred opening the `stats_mod` file: {e}")
-            return False
+        self._stats_mod = self._fetch_data("stats_mod")
+        return bool(self._stats_mod)
 
     def get_all_data(self) -> bool:
         """
@@ -170,7 +161,7 @@ class P2PoolAPI:
             self.get_stats_mod()
             return True
         except Exception as e:
-            print(f"An error occurred fetching the latest data: {e}")
+            log.error(f"An error occurred fetching the latest data: {e}")
             return False
 
     @property
