@@ -540,24 +540,33 @@ class P2PoolAPI:
             return False
     
     @property
-    def local_stratum_workers(self, default: bool = True) -> list | bool:
+    def local_stratum_workers_full(self) -> list | bool:
         """
-        The `workers` data from the `local_stratum` endpoint.
+        The full version of the `workers` data from the `local_stratum` endpoint.
+
+        Returns:
+            list | bool: The `workers_full` data from the `local_stratum` endpoint, False otherwise
+        """
+        try:
+            log.debug(self._workers_full)
+            return self._workers_full
+        except Exception as e:
+            log.error(f"An error occurred fetching the `workers_full` data: {e}")
+            return False
+
+    @property
+    def local_stratum_workers(self) -> list | bool:
+        """
+        The minimal version of the `workers` data from the `local_stratum` endpoint.
 
         Returns:
             list | bool: The `workers` data from the `local_stratum` endpoint, False otherwise
         """
         try:
-            if default == False:
-                log.debug(self._workers_full)
-                return self._workers_full
             log.debug(self._workers)
             return self._workers
         except Exception as e:
-            if default != "default":
-                log.error(f"An error occurred fetching the `workers_full` data: {e}")
-            else:
-                log.error(f"An error occurred fetching the `workers` data: {e}")
+            log.error(f"An error occurred fetching the `workers` data: {e}")
             return False
     
     @property
