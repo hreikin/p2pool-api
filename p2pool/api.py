@@ -4,9 +4,10 @@ P2Pool API interaction library.
 This module provides the `P2PoolAPI` class for interacting with various data sources in a P2Pool miner API.
 """
 
-import json, logging, requests
+import json, logging, requests, traceback
 from pathlib import Path
 from urllib.parse import urlparse
+from p2pool.exceptions import P2PoolAPIError
 
 log = logging.getLogger("p2pool.api")
 
