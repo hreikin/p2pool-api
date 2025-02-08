@@ -28,7 +28,7 @@ class P2PoolAPI:
         _stats_mod (dict): Data retrieved from the `stats_mod` API endpoint.
     """
 
-    def __init__(self, api_path: str, is_remote: bool = False, db_url: str = None):
+    def __init__(self, api_path: str, is_remote: bool = False, db_url: str = "sqlite:///p2pool.db"):
         """
         Initializes a P2PoolAPI instance.
 
@@ -98,12 +98,12 @@ class P2PoolAPI:
             log.error(f"An error occurred reading data from `{endpoint}`: {e}")
             return False
 
-    def _get_data_from_cache(self, cache: dict, keys: list) -> Any:
+    def _get_data_from_cache(self, cache: dict | list, keys: list, table_name: str, selection: str) -> Any:
         """
         Retrieve data from a nested dictionary cache using a list of keys.
 
         Args:
-            cache (dict): The cache dictionary to retrieve data from.
+            cache (dict | list): The cache dictionary to retrieve data from.
             keys (list): A list of keys to traverse the nested dictionary.
 
         Returns:
@@ -119,10 +119,26 @@ class P2PoolAPI:
                 for key in keys:
                     data = data[key]
             return data
-        except KeyError:
-            log.error("Key not found in cache")
-            return "N/A"
-        
+        except Exception as e:
+            log.error(f"An error occurred fetching data from cache, trying database: {e}")
+            raise P2PoolAPIError(e, traceback.format_exc(), f"An error occurred fetching data from cache: {e}") from e
+        except P2PoolAPIError as e:
+            return self._fallback_to_db(table_name, selection)
+    
+    def _fallback_to_db(self, table_name, selection):
+        """
+        Fallback to the database if the data is not available in the cache.
+
+        Args:
+            table_name (str): Name of the table to retrieve data from.
+            selection (str): Column to select from the table.
+
+        Returns:
+            Any: The retrieved data, or a default string value of "N/A" if not available.
+        """
+        result = P2PoolDatabase.retrieve_data_from_db(self._db_url, table_name, selection)
+        return result[0].get(selection, "N/A") if len(result) > 0 else "N/A"
+
     def _get_endpoint(self, endpoint: str) -> bool:
         """
         Loads data from the specified API endpoint.
