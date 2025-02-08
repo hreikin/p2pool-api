@@ -219,26 +219,9 @@ class P2PoolDatabase:
             json_data (dict): The JSON data containing the pool blocks information.
             cur_time (datetime): The current timestamp.
         """
-        all_heights = []
-        all_hash_values = []
-        all_difficulties = []
-        all_total_hashes = []
-        all_timestamps = []
-        for i in json_data:
-            all_heights.append(i.get("height"))
-            all_hash_values.append(i.get("hash"))
-            all_difficulties.append(i.get("difficulty"))
-            all_total_hashes.append(i.get("totalHashes"))
-            all_timestamps.append(i.get("ts"))
-
         pool_blocks = PoolBlocks(
             time = cur_time,
             full_json = json_data,
-            heights = all_heights,
-            hash_values = all_hash_values,
-            difficulties = all_difficulties,
-            total_hashes = all_total_hashes,
-            timestamps = all_timestamps
         )
         session.add(pool_blocks)
     
@@ -362,3 +345,6 @@ class P2PoolDatabase:
         finally:
             session.close()
         return data
+
+# Define the public interface of the module
+__all__ = ["P2PoolDatabase"]
