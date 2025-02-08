@@ -52,6 +52,7 @@ class P2PoolAPI:
         self._pool_blocks_cache = []
         self._pool_stats_cache = {}
         self._stats_mod_cache = {}
+        P2PoolDatabase._init_db(self._db_url)
         self.update_all_endpoints()
 
     def _validate_api_path(self, api_path: str, is_remote: bool) -> bool:
