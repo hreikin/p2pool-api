@@ -9,6 +9,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from p2pool.exceptions import P2PoolAPIError
 from typing import Any
+from p2pool.helpers import _local_console_endpoint, _local_p2p_endpoint, _local_stratum_endpoint, _network_stats_endpoint, _pool_blocks_endpoint, _pool_stats_endpoint, _stats_mod_endpoint
 
 log = logging.getLogger("p2pool.api")
 
@@ -151,7 +152,7 @@ class P2PoolAPI:
         Returns:
             bool: The status of the request, True if successful, False otherwise.
         """
-        return self._get_endpoint("local/console")
+        return self._get_endpoint(_local_console_endpoint)
 
     def update_local_p2p(self) -> bool:
         """
@@ -163,7 +164,7 @@ class P2PoolAPI:
         Returns:
             bool: The status of the request, True if successful, False otherwise.
         """
-        return self._get_endpoint("local/p2p")
+        return self._get_endpoint(_local_p2p_endpoint)
 
     def update_local_stratum(self) -> bool:
         """
@@ -175,7 +176,7 @@ class P2PoolAPI:
         Returns:
             bool: The status of the request, True if successful, False otherwise.
         """
-        return self._get_endpoint("local/stratum")
+        return self._get_endpoint(_local_stratum_endpoint)
 
     def update_network_stats(self) -> bool:
         """
@@ -187,7 +188,7 @@ class P2PoolAPI:
         Returns:
             bool: The status of the request, True if successful, False otherwise.
         """
-        return self._get_endpoint("network/stats")
+        return self._get_endpoint(_network_stats_endpoint)
 
     def update_pool_blocks(self) -> bool:
         """
@@ -199,7 +200,7 @@ class P2PoolAPI:
         Returns:
             bool: The status of the request, True if successful, False otherwise.
         """
-        return self._get_endpoint("pool/blocks")
+        return self._get_endpoint(_pool_blocks_endpoint)
 
     def update_pool_stats(self) -> bool:
         """
@@ -211,7 +212,7 @@ class P2PoolAPI:
         Returns:
             bool: The status of the request, True if successful, False otherwise.
         """
-        return self._get_endpoint("pool/stats")
+        return self._get_endpoint(_pool_stats_endpoint)
 
     def update_stats_mod(self) -> bool:
         """
@@ -221,9 +222,9 @@ class P2PoolAPI:
         a bool representing the success or failure of the request.
 
         Returns:
-            bool: True if the operation was successful, False otherwise.
+            bool: The status of the request, True if successful, False otherwise.
         """
-        return self._get_endpoint("stats_mod")
+        return self._get_endpoint(_stats_mod_endpoint)
 
     def update_all_endpoints(self) -> bool:
         """
