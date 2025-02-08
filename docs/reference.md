@@ -1,2 +1,2 @@
-::: p2pool_api.p2pool.P2PoolAPI
+::: p2pool.api.P2PoolAPI
     handler: python
