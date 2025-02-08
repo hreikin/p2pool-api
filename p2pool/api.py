@@ -37,10 +37,6 @@ class P2PoolAPI:
             is_remote (bool): Indicates if the API path is a remote URL.
         """
         self._api_path = Path(api_path).resolve() if not is_remote else api_path
-        
-        if not self._validate_api_path(self._api_path, is_remote):
-            raise ValueError("Invalid API path provided.")
-        
         self._is_remote = is_remote
         self._db_url = db_url
         self._local_console_cache = {}
@@ -52,7 +48,10 @@ class P2PoolAPI:
         self._pool_blocks_cache = []
         self._pool_stats_cache = {}
         self._stats_mod_cache = {}
-        P2PoolDatabase._init_db(self._db_url)
+        if not self._validate_api_path(self._api_path, is_remote):
+            raise ValueError("Invalid API path provided.")
+        if self._db_url is not None:
+            P2PoolDatabase._init_db(self._db_url)
         self.update_all_endpoints()
 
     def _validate_api_path(self, api_path: str, is_remote: bool) -> bool:
