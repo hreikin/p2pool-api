@@ -1,0 +1,7 @@
+_local_console_endpoint = "local/console"
+_local_p2p_endpoint = "local/p2p"
+_local_stratum_endpoint = "local/stratum"
+_network_stats_endpoint = "network/stats"
+_pool_blocks_endpoint = "pool/blocks"
+_pool_stats_endpoint = "pool/stats"
+_stats_mod_endpoint = "stats_mod"
