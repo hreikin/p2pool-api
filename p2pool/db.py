@@ -70,7 +70,7 @@ class P2PoolDatabase:
             raise P2PoolDatabaseError(e, traceback.format_exc(), f"Database engine for '{db_url}' does not exist. Please initialize the database first.") from e
     
     @classmethod
-    def _insert_data_to_db(cls, json_data, endpoint, db_url):
+    def _insert_data_into_db(cls, json_data, endpoint, db_url):
         """
         Inserts JSON data into the specified database table.
 
