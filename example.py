@@ -12,10 +12,10 @@ logging.basicConfig(
 )
 log = logging.getLogger("MyLOG")
 
-api_path = "api/"
-x = P2PoolAPI(api_path)
+api_path = "api/"               # Can also be a URL: api_path = "http://example.com/api/"
+x = P2PoolAPI(api_path)         # If using a URL: x = P2PoolAPI(api_path, is_remote=True)
 
-x.get_stats_mod()                                               # Update individual `stats_mod` endpoint
-x.get_all_data()                                                # Update all endpoints at once
-log.info(x._local_stratum)                                      # Log entire response
-log.info(x.local_p2p_uptime)                                    # Log property representing individual data from the API
+x.update_stats_mod()            # Update individual `stats_mod` endpoint
+x.update_all_endpoints()        # Update all endpoints at once
+log.info(x.local_stratum)       # Log entire response
+log.info(x.local_p2p_uptime)    # Log property representing individual data from the API
