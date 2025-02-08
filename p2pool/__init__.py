@@ -4,10 +4,12 @@ P2Pool API module initializer.
 This module provides the `P2PoolAPI` object to interact with the P2Pool API.
 """
 
-# TODO: Fix logging
-# TODO: Replace print statements
-# TODO: Check version numbers and other metadata is correct
-# TODO: Research pre-commit hooks to update version numbers in all relevant files
+# TODO: Test recent changes to the module.
+# // TODO: Create ORM models for each endpoint.
+# // TODO: Add database functionality to the module.
+# TODO: Create unittests for the module.
+# TODO: Update documentation and docstrings.
+# TODO: Create examples.
 
 __name__ = "p2pool"
 __author__ = "hreikin"
@@ -18,5 +20,9 @@ __description__ = "This module provides objects to interact with the P2Pool API 
 __url__ = "https://hreikin.co.uk/p2pool-api"
 
 from .api import P2PoolAPI
+from .db import P2PoolDatabase
+from .exceptions import P2PoolAPIError, P2PoolConnectionError, P2PoolDatabaseError
+from .models import Console, P2P, Stratum, NetworkStats, PoolBlocks, PoolStats, StatsMod
+from .helpers import _local_console_endpoint, _local_p2p_endpoint, _local_stratum_endpoint, _network_stats_endpoint, _pool_blocks_endpoint, _pool_stats_endpoint, _stats_mod_endpoint, _local_console_table_name, _local_p2p_table_name, _local_stratum_table_name, _network_stats_table_name, _pool_blocks_table_name, _pool_stats_table_name, _stats_mod_table_name
 
-__all__ = ["P2PoolAPI"]
+__all__ = ["P2PoolAPI", "P2PoolDatabase", "P2PoolAPIError", "P2PoolConnectionError", "P2PoolDatabaseError", "Console", "P2P", "Stratum", "NetworkStats", "PoolBlocks", "PoolStats", "StatsMod", "_local_console_endpoint", "_local_p2p_endpoint", "_local_stratum_endpoint", "_network_stats_endpoint", "_pool_blocks_endpoint", "_pool_stats_endpoint", "_stats_mod_endpoint", "_local_console_table_name", "_local_p2p_table_name", "_local_stratum_table_name", "_network_stats_table_name", "_pool_blocks_table_name", "_pool_stats_table_name", "_stats_mod_table_name"]
