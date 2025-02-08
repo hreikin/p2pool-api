@@ -611,7 +611,7 @@ class P2PoolAPI:
         try:
             pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [], _pool_blocks_table_name, "full_json")
             for i in pool_blocks:
-                heights.append([i]["height"])
+                heights.append(i["height"])
             return heights
         except Exception as e:
             return "N/A"
@@ -628,7 +628,7 @@ class P2PoolAPI:
         try:
             pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [], _pool_blocks_table_name, "full_json")
             for i in pool_blocks:
-                hashes.append([i]["hash"])
+                hashes.append(i["hash"])
             return hashes
         except Exception as e:
             return "N/A"
@@ -645,7 +645,7 @@ class P2PoolAPI:
         try:
             pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [], _pool_blocks_table_name, "full_json")
             for i in pool_blocks:
-                difficulties.append([i]["difficulty"])
+                difficulties.append(i["difficulty"])
             return difficulties
         except Exception as e:
             return "N/A"
@@ -662,7 +662,7 @@ class P2PoolAPI:
         try:
             pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [], _pool_blocks_table_name, "full_json")
             for i in pool_blocks:
-                total_hashes.append([i]["totalHashes"])
+                total_hashes.append(i["totalHashes"])
             return total_hashes
         except Exception as e:
             return "N/A"
@@ -679,7 +679,7 @@ class P2PoolAPI:
         try:
             pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [], _pool_blocks_table_name, "full_json")
             for i in pool_blocks:
-                timestamps.append([i]["ts"])
+                timestamps.append(i["ts"])
             return timestamps
         except Exception as e:
             return "N/A"
