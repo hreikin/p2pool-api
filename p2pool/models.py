@@ -57,11 +57,6 @@ class PoolBlocks(Base):
     uid = Column(Integer, primary_key=True)
     time = Column(DateTime, default=datetime.now)
     full_json = Column(JSON)
-    heights = Column(JSON)      # list of all heights
-    hash_values = Column(JSON)  # list of all hash values
-    difficulties = Column(JSON) # list of all difficulties
-    total_hashes = Column(JSON) # list of all total hashes
-    timestamps = Column(JSON)   # list of all timestamps
 
 class PoolStats(Base):
     __tablename__ = 'pool_stats'
