@@ -7,8 +7,9 @@ This module provides the `P2PoolAPI` class for interacting with various data sou
 import json, logging, requests, traceback
 from pathlib import Path
 from urllib.parse import urlparse
-from p2pool.exceptions import P2PoolAPIError
 from typing import Any
+from p2pool.db import P2PoolDatabase
+from p2pool.exceptions import P2PoolAPIError
 from p2pool.helpers import _local_console_endpoint, _local_p2p_endpoint, _local_stratum_endpoint, _network_stats_endpoint, _pool_blocks_endpoint, _pool_stats_endpoint, _stats_mod_endpoint
 
 log = logging.getLogger("p2pool.api")
@@ -27,7 +28,7 @@ class P2PoolAPI:
         _stats_mod (dict): Data retrieved from the `stats_mod` API endpoint.
     """
 
-    def __init__(self, api_path: str, is_remote: bool = False):
+    def __init__(self, api_path: str, is_remote: bool = False, db_url: str = None):
         """
         Initializes a P2PoolAPI instance.
 
@@ -41,6 +42,7 @@ class P2PoolAPI:
             raise ValueError("Invalid API path provided.")
         
         self._is_remote = is_remote
+        self._db_url = db_url
         self._local_console_cache = {}
         self._local_p2p_cache = {}
         self._local_stratum_cache = {}
@@ -141,6 +143,19 @@ class P2PoolAPI:
                 self._workers_cache = sorted(self._workers_cache, key=lambda x: int(x[3]), reverse=True)
             return True
         return False
+    
+    def get_from_db(self, table_name, selection):
+        """
+        Retrieve data from the database.
+
+        Args:
+            table_name (str): Name of the table to retrieve data from.
+            selection (str): Column to select from the table.
+
+        Returns:
+            list: List of dictionaries containing the retrieved data.
+        """
+        return P2PoolDatabase.retrieve_data_from_db(self._db_url, table_name, selection)
     
     def update_local_console(self) -> bool:
         """
