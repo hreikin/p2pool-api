@@ -304,3 +304,61 @@ class P2PoolDatabase:
             round_hashes = json_data["pool"].get("roundHashes") if json_data.get("pool") else None
         )
         session.add(stats_mod)
+    
+    @classmethod
+    def retrieve_data_from_db(cls, db_url, table_name, selection = "*", start_time = None, end_time = None, limit = 1):
+        """
+        Retrieves data from the specified database table within the given timeframe.
+
+        Args:
+            db_url (str): Database URL for creating the engine.
+            table_name (str): Name of the table to retrieve data from.
+            selection (str, optional): Column(s) to select from the table. Defaults to "*".
+            start_time (datetime, optional): Start time for the data retrieval. Defaults to None.
+            end_time (datetime, optional): End time for the data retrieval. Defaults to None.
+            limit (int, optional): Limit the number of rows retrieved. Defaults to 1.
+
+        Returns:
+            list: List of dictionaries containing the retrieved data or "N/A" if no data is found.
+
+        Raises:
+            P2PoolDatabaseError: If an error occurs while retrieving data from the database.
+        """
+        data = "N/A"
+        try:
+            session = cls._get_db_session(db_url)
+
+            model_class = cls._table_model_map.get(table_name)
+            if not model_class:
+                raise ValueError(f"Table '{table_name}' does not have a corresponding ORM model class.")
+
+            # Build the query
+            query = session.query(model_class)
+
+            # Apply selection
+            if selection != "*":
+                if isinstance(selection, list):
+                    query = query.with_entities(*[getattr(model_class, col) for col in selection])
+                else:
+                    query = query.with_entities(getattr(model_class, selection))
+
+            # Apply time filters
+            if start_time:
+                query = query.filter(model_class.timestamp >= start_time)
+            if end_time:
+                query = query.filter(model_class.timestamp <= end_time)
+
+            # Apply limit
+            query = query.order_by(model_class.timestamp.desc()).limit(limit)
+
+            # Execute the query and fetch results
+            results = query.all()
+            if results:
+                data = [result._asdict() for result in results]
+            else:
+                data = "N/A"
+        except Exception as e:
+            raise P2PoolDatabaseError(e, traceback.format_exc(), f"An error occurred retrieving data from the database:") from e
+        finally:
+            session.close()
+        return data
