@@ -10,7 +10,7 @@ from urllib.parse import urlparse
 from typing import Any
 from p2pool.db import P2PoolDatabase
 from p2pool.exceptions import P2PoolAPIError
-from p2pool.helpers import _local_console_endpoint, _local_p2p_endpoint, _local_stratum_endpoint, _network_stats_endpoint, _pool_blocks_endpoint, _pool_stats_endpoint, _stats_mod_endpoint
+from p2pool.helpers import _local_console_endpoint, _local_p2p_endpoint, _local_stratum_endpoint, _network_stats_endpoint, _pool_blocks_endpoint, _pool_stats_endpoint, _stats_mod_endpoint, _local_console_table_name, _local_p2p_table_name, _local_stratum_table_name, _network_stats_table_name, _pool_blocks_table_name, _pool_stats_table_name, _stats_mod_table_name
 
 log = logging.getLogger("p2pool.api")
 
@@ -153,14 +153,10 @@ class P2PoolAPI:
         data = self._fetch_data(endpoint)
         if data:
             setattr(self, cache_attr, data)
-            if endpoint == "local/stratum":
-                self._workers_full_cache = data["workers"]
-                self._workers_cache = [w.split(",") for w in self._workers_full_cache]
-                self._workers_cache = sorted(self._workers_cache, key=lambda x: int(x[3]), reverse=True)
             return True
         return False
     
-    def get_from_db(self, table_name, selection):
+    def get_from_db(self, table_name: str, selection: str) -> list:
         """
         Retrieve data from the database.
 
@@ -289,7 +285,7 @@ class P2PoolAPI:
         Returns:
             dict: The local console data.
         """
-        return self._get_data_from_cache(self._local_console_cache, [])
+        return self._get_data_from_cache(self._local_console_cache, [], _local_console_table_name, "full_json")
 
     @property
     def local_p2p(self) -> dict:
@@ -299,7 +295,7 @@ class P2PoolAPI:
         Returns:
             dict: The local P2P data.
         """
-        return self._get_data_from_cache(self._local_p2p_cache, [])
+        return self._get_data_from_cache(self._local_p2p_cache, [], _local_p2p_table_name, "full_json")
 
     @property
     def local_stratum(self) -> dict:
@@ -309,7 +305,7 @@ class P2PoolAPI:
         Returns:
             dict: The local stratum data.
         """
-        return self._get_data_from_cache(self._local_stratum_cache, [])
+        return self._get_data_from_cache(self._local_stratum_cache, [], _local_stratum_table_name, "full_json")
 
     @property
     def network_stats(self) -> dict:
@@ -319,7 +315,7 @@ class P2PoolAPI:
         Returns:
             dict: The network stats data.
         """
-        return self._get_data_from_cache(self._network_stats_cache, [])
+        return self._get_data_from_cache(self._network_stats_cache, [], _network_stats_table_name, "full_json")
 
     @property
     def pool_blocks(self) -> dict:
@@ -329,7 +325,7 @@ class P2PoolAPI:
         Returns:
             dict: The pool blocks data.
         """
-        return self._get_data_from_cache(self._pool_blocks_cache, [])
+        return self._get_data_from_cache(self._pool_blocks_cache, [], _pool_blocks_table_name, "full_json")
 
     @property
     def pool_stats(self) -> dict:
@@ -339,7 +335,7 @@ class P2PoolAPI:
         Returns:
             dict: The pool stats data.
         """
-        return self._get_data_from_cache(self._pool_stats_cache, [])
+        return self._get_data_from_cache(self._pool_stats_cache, [], _pool_stats_table_name, "full_json")
 
     @property
     def stats_mod(self) -> dict:
@@ -349,7 +345,7 @@ class P2PoolAPI:
         Returns:
             dict: The stats mod data.
         """
-        return self._get_data_from_cache(self._stats_mod_cache, [])
+        return self._get_data_from_cache(self._stats_mod_cache, [], _stats_mod_table_name, "full_json")
 
     @property
     def local_console_mode(self) -> str:
@@ -359,7 +355,7 @@ class P2PoolAPI:
         Returns:
             str: The local console mode.
         """
-        return self._get_data_from_cache(self._local_console_cache, ["mode"])
+        return self._get_data_from_cache(self._local_console_cache, ["mode"], _local_console_table_name, "mode")
 
     @property
     def local_console_tcp_port(self) -> int:
@@ -369,7 +365,7 @@ class P2PoolAPI:
         Returns:
             int: The local console TCP port.
         """
-        return self._get_data_from_cache(self._local_console_cache, ["tcp_port"])
+        return self._get_data_from_cache(self._local_console_cache, ["tcp_port"], _local_console_table_name, "tcp_port")
 
     @property
     def local_p2p_connections(self) -> int:
@@ -379,7 +375,7 @@ class P2PoolAPI:
         Returns:
             int: The number of local P2P connections.
         """
-        return self._get_data_from_cache(self._local_p2p_cache, ["connections"])
+        return self._get_data_from_cache(self._local_p2p_cache, ["connections"], _local_p2p_table_name, "connections")
 
     @property
     def local_p2p_incoming_connections(self) -> int:
@@ -389,7 +385,7 @@ class P2PoolAPI:
         Returns:
             int: The number of local P2P incoming connections.
         """
-        return self._get_data_from_cache(self._local_p2p_cache, ["incoming_connections"])
+        return self._get_data_from_cache(self._local_p2p_cache, ["incoming_connections"], _local_p2p_table_name, "incoming_connections")
 
     @property
     def local_p2p_peer_list_size(self) -> int:
@@ -399,7 +395,7 @@ class P2PoolAPI:
         Returns:
             int: The size of the local P2P peer list.
         """
-        return self._get_data_from_cache(self._local_p2p_cache, ["peer_list_size"])
+        return self._get_data_from_cache(self._local_p2p_cache, ["peer_list_size"], _local_p2p_table_name, "peer_list_size")
 
     @property
     def local_p2p_peers(self) -> list:
@@ -409,7 +405,7 @@ class P2PoolAPI:
         Returns:
             list: The list of local P2P peers.
         """
-        return self._get_data_from_cache(self._local_p2p_cache, ["peers"])
+        return self._get_data_from_cache(self._local_p2p_cache, ["peers"], _local_p2p_table_name, "peers")
 
     @property
     def local_p2p_uptime(self) -> int:
@@ -419,7 +415,7 @@ class P2PoolAPI:
         Returns:
             int: The local P2P uptime.
         """
-        return self._get_data_from_cache(self._local_p2p_cache, ["uptime"])
+        return self._get_data_from_cache(self._local_p2p_cache, ["uptime"], _local_p2p_table_name, "uptime")
 
     @property
     def local_stratum_hashrate_15m(self) -> int:
@@ -429,7 +425,7 @@ class P2PoolAPI:
         Returns:
             int: The local stratum hashrate for the last 15 minutes.
         """
-        return self._get_data_from_cache(self._local_stratum_cache, ["hashrate_15m"])
+        return self._get_data_from_cache(self._local_stratum_cache, ["hashrate_15m"], _local_stratum_table_name, "hashrate_15m")
 
     @property
     def local_stratum_hashrate_1h(self) -> int:
@@ -439,7 +435,7 @@ class P2PoolAPI:
         Returns:
             int: The local stratum hashrate for the last hour.
         """
-        return self._get_data_from_cache(self._local_stratum_cache, ["hashrate_1h"])
+        return self._get_data_from_cache(self._local_stratum_cache, ["hashrate_1h"], _local_stratum_table_name, "hashrate_1h")
 
     @property
     def local_stratum_hashrate_24h(self) -> int:
@@ -449,7 +445,7 @@ class P2PoolAPI:
         Returns:
             int: The local stratum hashrate for the last 24 hours.
         """
-        return self._get_data_from_cache(self._local_stratum_cache, ["hashrate_24h"])
+        return self._get_data_from_cache(self._local_stratum_cache, ["hashrate_24h"], _local_stratum_table_name, "hashrate_24h")
 
     @property
     def local_stratum_total_hashes(self) -> int:
@@ -459,7 +455,7 @@ class P2PoolAPI:
         Returns:
             int: The total number of hashes for the local stratum.
         """
-        return self._get_data_from_cache(self._local_stratum_cache, ["total_hashes"])
+        return self._get_data_from_cache(self._local_stratum_cache, ["total_hashes"], _local_stratum_table_name, "total_hashes")
 
     @property
     def local_stratum_shares_found(self) -> int:
@@ -469,7 +465,7 @@ class P2PoolAPI:
         Returns:
             int: The number of shares found by the local stratum.
         """
-        return self._get_data_from_cache(self._local_stratum_cache, ["shares_found"])
+        return self._get_data_from_cache(self._local_stratum_cache, ["shares_found"], _local_stratum_table_name, "shares_found")
 
     @property
     def local_stratum_shares_failed(self) -> int:
@@ -479,7 +475,7 @@ class P2PoolAPI:
         Returns:
             int: The number of shares failed by the local stratum.
         """
-        return self._get_data_from_cache(self._local_stratum_cache, ["shares_failed"])
+        return self._get_data_from_cache(self._local_stratum_cache, ["shares_failed"], _local_stratum_table_name, "shares_failed")
 
     @property
     def local_stratum_average_effort(self) -> int:
@@ -489,7 +485,7 @@ class P2PoolAPI:
         Returns:
             int: The average effort of the local stratum.
         """
-        return self._get_data_from_cache(self._local_stratum_cache, ["average_effort"])
+        return self._get_data_from_cache(self._local_stratum_cache, ["average_effort"], _local_stratum_table_name, "average_effort")
 
     @property
     def local_stratum_current_effort(self) -> int:
@@ -499,7 +495,7 @@ class P2PoolAPI:
         Returns:
             int: The current effort of the local stratum.
         """
-        return self._get_data_from_cache(self._local_stratum_cache, ["current_effort"])
+        return self._get_data_from_cache(self._local_stratum_cache, ["current_effort"], _local_stratum_table_name, "current_effort")
 
     @property
     def local_stratum_connections(self) -> int:
@@ -509,7 +505,7 @@ class P2PoolAPI:
         Returns:
             int: The number of connections to the local stratum.
         """
-        return self._get_data_from_cache(self._local_stratum_cache, ["connections"])
+        return self._get_data_from_cache(self._local_stratum_cache, ["connections"], _local_stratum_table_name, "connections")
 
     @property
     def local_stratum_incoming_connections(self) -> int:
@@ -519,7 +515,7 @@ class P2PoolAPI:
         Returns:
             int: The number of incoming connections to the local stratum.
         """
-        return self._get_data_from_cache(self._local_stratum_cache, ["incoming_connections"])
+        return self._get_data_from_cache(self._local_stratum_cache, ["incoming_connections"], _local_stratum_table_name, "incoming_connections")
 
     @property
     def local_stratum_block_reward_share_percent(self) -> int:
@@ -529,7 +525,7 @@ class P2PoolAPI:
         Returns:
             int: The block reward share percentage of the local stratum.
         """
-        return self._get_data_from_cache(self._local_stratum_cache, ["block_reward_share_percent"])
+        return self._get_data_from_cache(self._local_stratum_cache, ["block_reward_share_percent"], _local_stratum_table_name, "block_reward_share_percent")
 
     @property
     def local_stratum_workers_full(self) -> list:
@@ -539,17 +535,19 @@ class P2PoolAPI:
         Returns:
             list: The full list of workers for the local stratum.
         """
-        return self._get_data_from_cache(self._workers_full_cache, [])
+        return self._get_data_from_cache(self._local_stratum_cache, ["workers"], _local_stratum_table_name, "workers")
 
     @property
-    def local_stratum_workers(self) -> list:
+    def local_stratum_workers_short(self) -> list:
         """
         Returns the list of workers for the local stratum.
 
         Returns:
-            list: The list of workers for the local stratum.
+            list: The short list of workers for the local stratum.
         """
-        return self._get_data_from_cache(self._workers_cache, [])
+        workers = self._get_data_from_cache(self._local_stratum_cache, ["workers"], _local_stratum_table_name, "workers")
+        result = [w.split(",") for w in workers]
+        return sorted(result, key=lambda x: int(x[3]), reverse=True)
 
     @property
     def network_stats_difficulty(self) -> int:
@@ -559,7 +557,7 @@ class P2PoolAPI:
         Returns:
             int: The network difficulty.
         """
-        return self._get_data_from_cache(self._network_stats_cache, ["difficulty"])
+        return self._get_data_from_cache(self._network_stats_cache, ["difficulty"], _network_stats_table_name, "difficulty")
 
     @property
     def network_stats_hash(self) -> str:
@@ -569,7 +567,7 @@ class P2PoolAPI:
         Returns:
             str: The network hash.
         """
-        return self._get_data_from_cache(self._network_stats_cache, ["hash"])
+        return self._get_data_from_cache(self._network_stats_cache, ["hash"], _network_stats_table_name, "hash_value")
 
     @property
     def network_stats_height(self) -> int:
@@ -579,7 +577,7 @@ class P2PoolAPI:
         Returns:
             int: The network height.
         """
-        return self._get_data_from_cache(self._network_stats_cache, ["height"])
+        return self._get_data_from_cache(self._network_stats_cache, ["height"], _network_stats_table_name, "height")
 
     @property
     def network_stats_reward(self) -> int:
@@ -589,7 +587,7 @@ class P2PoolAPI:
         Returns:
             int: The network reward.
         """
-        return self._get_data_from_cache(self._network_stats_cache, ["reward"])
+        return self._get_data_from_cache(self._network_stats_cache, ["reward"], _network_stats_table_name, "reward")
 
     @property
     def network_stats_timestamp(self) -> int:
@@ -599,7 +597,7 @@ class P2PoolAPI:
         Returns:
             int: The network timestamp.
         """
-        return self._get_data_from_cache(self._network_stats_cache, ["ts"])
+        return self._get_data_from_cache(self._network_stats_cache, ["timestamp"], _network_stats_table_name, "timestamp")
 
     @property
     def pool_blocks_heights(self) -> list[int]:
@@ -611,9 +609,9 @@ class P2PoolAPI:
         """
         heights = []
         try:
-            pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [])
+            pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [], _pool_blocks_table_name, "full_json")
             for i in pool_blocks:
-                heights.append(pool_blocks[i]["height"])
+                heights.append([i]["height"])
             return heights
         except Exception as e:
             return "N/A"
@@ -628,9 +626,9 @@ class P2PoolAPI:
         """
         hashes = []
         try:
-            pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [])
+            pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [], _pool_blocks_table_name, "full_json")
             for i in pool_blocks:
-                hashes.append(pool_blocks[i]["hash"])
+                hashes.append([i]["hash"])
             return hashes
         except Exception as e:
             return "N/A"
@@ -645,9 +643,9 @@ class P2PoolAPI:
         """
         difficulties = []
         try:
-            pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [])
+            pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [], _pool_blocks_table_name, "full_json")
             for i in pool_blocks:
-                difficulties.append(pool_blocks[i]["difficulty"])
+                difficulties.append([i]["difficulty"])
             return difficulties
         except Exception as e:
             return "N/A"
@@ -662,9 +660,9 @@ class P2PoolAPI:
         """
         total_hashes = []
         try:
-            pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [])
+            pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [], _pool_blocks_table_name, "full_json")
             for i in pool_blocks:
-                total_hashes.append(pool_blocks[i]["totalHashes"])
+                total_hashes.append([i]["totalHashes"])
             return total_hashes
         except Exception as e:
             return "N/A"
@@ -679,12 +677,22 @@ class P2PoolAPI:
         """
         timestamps = []
         try:
-            pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [])
+            pool_blocks = self._get_data_from_cache(self._pool_blocks_cache, [], _pool_blocks_table_name, "full_json")
             for i in pool_blocks:
-                timestamps.append(pool_blocks[i]["ts"])
+                timestamps.append([i]["ts"])
             return timestamps
         except Exception as e:
             return "N/A"
+    
+    @property
+    def pool_stats_pool_list(self) -> list[str]:
+        """
+        Returns the pool stats pool list.
+
+        Returns:
+            list[str]: The pool stats pool list.
+        """
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_list"], _pool_stats_table_name, "pool_list")
 
     @property
     def pool_stats_payout_type(self) -> str:
@@ -694,17 +702,28 @@ class P2PoolAPI:
         Returns:
             str: The pool stats payout type.
         """
-        return self._get_data_from_cache(self._pool_stats_cache, ["pool_list", 0])
-
+        result = self._get_data_from_cache(self._pool_stats_cache, ["pool_list"], _pool_stats_table_name, "pool_list")
+        return result[0]
+    
     @property
-    def pool_stats_hash_rate(self) -> int:
+    def pool_stats_pool_statistics(self) -> dict:
+        """
+        Returns the pool stats pool statistics.
+
+        Returns:
+            dict: The pool stats pool statistics.
+        """
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics"], _pool_stats_table_name, "pool_statistics")
+    
+    @property
+    def pool_stats_hashrate(self) -> int:
         """
         Returns the pool stats hash rate.
 
         Returns:
             int: The pool stats hash rate.
         """
-        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "hashRate"])
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "hashRate"], _pool_stats_table_name, "hashrate")
 
     @property
     def pool_stats_miners(self) -> int:
@@ -714,7 +733,7 @@ class P2PoolAPI:
         Returns:
             int: The number of miners in the pool stats.
         """
-        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "miners"])
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "miners"], _pool_stats_table_name, "miners")
 
     @property
     def pool_stats_total_hashes(self) -> int:
@@ -724,7 +743,7 @@ class P2PoolAPI:
         Returns:
             int: The total number of hashes in the pool stats.
         """
-        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "totalHashes"])
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "totalHashes"], _pool_stats_table_name, "total_hashes")
 
     @property
     def pool_stats_last_block_found_time(self) -> int:
@@ -734,7 +753,7 @@ class P2PoolAPI:
         Returns:
             int: The last block found time in the pool stats.
         """
-        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "lastBlockFoundTime"])
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "lastBlockFoundTime"], _pool_stats_table_name, "last_block_found_time")
 
     @property
     def pool_stats_last_block_found(self) -> int:
@@ -744,7 +763,7 @@ class P2PoolAPI:
         Returns:
             int: The last block found in the pool stats.
         """
-        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "lastBlockFound"])
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "lastBlockFound"], _pool_stats_table_name, "last_block_found")
 
     @property
     def pool_stats_total_blocks_found(self) -> int:
@@ -754,7 +773,7 @@ class P2PoolAPI:
         Returns:
             int: The total number of blocks found in the pool stats.
         """
-        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "totalBlocksFound"])
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "totalBlocksFound"], _pool_stats_table_name, "total_blocks_found")
 
     @property
     def pool_stats_pplns_weight(self) -> int:
@@ -764,7 +783,7 @@ class P2PoolAPI:
         Returns:
             int: The PPLNS weight in the pool stats.
         """
-        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "pplnsWeight"])
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "pplnsWeight"], _pool_stats_table_name, "pplns_weight")
 
     @property
     def pool_stats_pplns_window_size(self) -> int:
@@ -774,7 +793,7 @@ class P2PoolAPI:
         Returns:
             int: The PPLNS window size in the pool stats.
         """
-        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "pplnsWindowSize"])
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "pplnsWindowSize"], _pool_stats_table_name, "pplns_window_size")
 
     @property
     def pool_stats_sidechain_difficulty(self) -> int:
@@ -784,7 +803,7 @@ class P2PoolAPI:
         Returns:
             int: The sidechain difficulty in the pool stats.
         """
-        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "sidechainDifficulty"])
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "sidechainDifficulty"], _pool_stats_table_name, "sidechain_difficulty")
 
     @property
     def pool_stats_sidechain_height(self) -> int:
@@ -794,7 +813,7 @@ class P2PoolAPI:
         Returns:
             int: The sidechain height in the pool stats.
         """
-        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "sidechainHeight"])
+        return self._get_data_from_cache(self._pool_stats_cache, ["pool_statistics", "sidechainHeight"], _pool_stats_table_name, "sidechain_height")
 
     @property
     def stats_mod_config(self) -> dict:
@@ -804,10 +823,20 @@ class P2PoolAPI:
         Returns:
             dict: The stats mod config.
         """
-        return self._get_data_from_cache(self._stats_mod_cache, ["config"])
+        return self._get_data_from_cache(self._stats_mod_cache, ["config"], _stats_mod_table_name, "config")
 
     @property
-    def stats_mod_ports(self) -> list[int]:
+    def stats_mod_ports(self) -> list[dict]:
+        """
+        Returns the list of ports in the stats mod config.
+
+        Returns:
+            list[dict]: The list of ports in the stats mod config.
+        """
+        return self._get_data_from_cache(self._stats_mod_cache, ["config", "ports"], _stats_mod_table_name, "ports")
+
+    @property
+    def stats_mod_port_value(self) -> list[int]:
         """
         Returns the list of ports in the stats mod config.
 
@@ -816,7 +845,7 @@ class P2PoolAPI:
         """
         ports = []
         try:
-            config_ports = self._get_data_from_cache(self._stats_mod_cache, ["config", "ports"])
+            config_ports = self._get_data_from_cache(self._stats_mod_cache, ["config", "ports"], _stats_mod_table_name, "ports")
             for i in config_ports:
                 ports.append(config_ports[i]["port"])
             return ports
@@ -833,7 +862,7 @@ class P2PoolAPI:
         """
         tls = []
         try:
-            config_ports = self._get_data_from_cache(self._stats_mod_cache, ["config", "ports"])
+            config_ports = self._get_data_from_cache(self._stats_mod_cache, ["config", "ports"], _stats_mod_table_name, "ports")
             for i in config_ports:
                 tls.append(config_ports[i]["tls"])
             return tls
@@ -848,7 +877,7 @@ class P2PoolAPI:
         Returns:
             int: The fee in the stats mod config.
         """
-        return self._get_data_from_cache(self._stats_mod_cache, ["config", "fee"])
+        return self._get_data_from_cache(self._stats_mod_cache, ["config", "fee"], _stats_mod_table_name, "fee")
 
     @property
     def stats_mod_min_payment_threshold(self) -> int:
@@ -858,7 +887,17 @@ class P2PoolAPI:
         Returns:
             int: The minimum payment threshold in the stats mod config.
         """
-        return self._get_data_from_cache(self._stats_mod_cache, ["config", "minPaymentThreshold"])
+        return self._get_data_from_cache(self._stats_mod_cache, ["config", "minPaymentThreshold"], _stats_mod_table_name, "min_payment_threshold")
+
+    @property
+    def stats_mod_network(self) -> dict:
+        """
+        Returns the network in the stats mod data.
+
+        Returns:
+            dict: The network in the stats mod data.
+        """
+        return self._get_data_from_cache(self._stats_mod_cache, ["network"], _stats_mod_table_name, "network")
 
     @property
     def stats_mod_network_height(self) -> int:
@@ -868,7 +907,27 @@ class P2PoolAPI:
         Returns:
             int: The network height in the stats mod data.
         """
-        return self._get_data_from_cache(self._stats_mod_cache, ["network", "height"])
+        return self._get_data_from_cache(self._stats_mod_cache, ["network", "height"], _stats_mod_table_name, "height")
+
+    @property
+    def stats_mod_pool(self) -> dict:
+        """
+        Returns the pool in the stats mod data.
+
+        Returns:
+            dict: The pool in the stats mod data.
+        """
+        return self._get_data_from_cache(self._stats_mod_cache, ["pool"], _stats_mod_table_name, "pool")
+    
+    @property
+    def stats_mod_pool_stats(self) -> dict:
+        """
+        Returns the pool stats in the stats mod data.
+
+        Returns:
+            dict: The pool stats in the stats mod data.
+        """
+        return self._get_data_from_cache(self._stats_mod_cache, ["pool", "stats"], _stats_mod_table_name, "stats")
 
     @property
     def stats_mod_last_block_found(self) -> str:
@@ -878,7 +937,7 @@ class P2PoolAPI:
         Returns:
             str: The last block found in the stats mod data.
         """
-        return self._get_data_from_cache(self._stats_mod_cache, ["pool", "stats", "lastBlockFound"])
+        return self._get_data_from_cache(self._stats_mod_cache, ["pool", "stats", "lastBlockFound"], _stats_mod_table_name, "last_block_found")
 
     @property
     def stats_mod_blocks(self) -> list:
@@ -888,7 +947,7 @@ class P2PoolAPI:
         Returns:
             list: The list of blocks in the stats mod data.
         """
-        return self._get_data_from_cache(self._stats_mod_cache, ["pool", "blocks"])
+        return self._get_data_from_cache(self._stats_mod_cache, ["pool", "blocks"], _stats_mod_table_name, "blocks")
 
     @property
     def stats_mod_miners(self) -> int:
@@ -898,7 +957,7 @@ class P2PoolAPI:
         Returns:
             int: The number of miners in the stats mod data.
         """
-        return self._get_data_from_cache(self._stats_mod_cache, ["pool", "miners"])
+        return self._get_data_from_cache(self._stats_mod_cache, ["pool", "miners"], _stats_mod_table_name, "miners")
 
     @property
     def stats_mod_hashrate(self) -> int:
@@ -908,7 +967,7 @@ class P2PoolAPI:
         Returns:
             int: The hashrate in the stats mod data.
         """
-        return self._get_data_from_cache(self._stats_mod_cache, ["pool", "hashrate"])
+        return self._get_data_from_cache(self._stats_mod_cache, ["pool", "hashrate"], _stats_mod_table_name, "hashrate")
 
     @property
     def stats_mod_round_hashes(self) -> int:
@@ -918,7 +977,7 @@ class P2PoolAPI:
         Returns:
             int: The round hashes in the stats mod data.
         """
-        return self._get_data_from_cache(self._stats_mod_cache, ["pool", "roundHashes"])
+        return self._get_data_from_cache(self._stats_mod_cache, ["pool", "roundHashes"], _stats_mod_table_name, "round_hashes")
 
 # Define the public interface of the module
 __all__ = ["P2PoolAPI"]
