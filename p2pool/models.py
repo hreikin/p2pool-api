@@ -94,3 +94,6 @@ class StatsMod(Base):
     miners = Column(Integer)
     hashrate = Column(Integer)
     round_hashes = Column(Integer)
+
+# Define the public interface of the module
+__all__ = ["Console", "P2P", "Stratum", "NetworkStats", "PoolBlocks", "PoolStats", "StatsMod"]
