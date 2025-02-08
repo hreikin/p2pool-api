@@ -153,6 +153,7 @@ class P2PoolAPI:
         data = self._fetch_data(endpoint)
         if data:
             setattr(self, cache_attr, data)
+            P2PoolDatabase._insert_data_into_db(data, endpoint, self._db_url)
             return True
         return False
     
