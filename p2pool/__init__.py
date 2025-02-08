@@ -14,7 +14,7 @@ This module provides the `P2PoolAPI` object to interact with the P2Pool API.
 __name__ = "p2pool"
 __author__ = "hreikin"
 __email__ = "hreikin@gmail.com"
-__version__ = "0.0.3"
+__version__ = "0.1.0"
 __license__ = "MIT"
 __description__ = "This module provides objects to interact with the P2Pool API and store collected data in a database."
 __url__ = "https://hreikin.co.uk/p2pool-api"
