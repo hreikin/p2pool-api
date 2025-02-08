@@ -12,3 +12,6 @@ _network_stats_table_name = "network_stats"
 _pool_blocks_table_name = "pool_blocks"
 _pool_stats_table_name = "pool_stats"
 _stats_mod_table_name = "stats_mod"
+
+# Define the public interface of the module
+__all__ = ["_local_console_endpoint", "_local_p2p_endpoint", "_local_stratum_endpoint", "_network_stats_endpoint", "_pool_blocks_endpoint", "_pool_stats_endpoint", "_stats_mod_endpoint", "_local_console_table_name", "_local_p2p_table_name", "_local_stratum_table_name", "_network_stats_table_name", "_pool_blocks_table_name", "_pool_stats_table_name", "_stats_mod_table_name"]
