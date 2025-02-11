@@ -35,6 +35,7 @@ class P2PoolAPI:
         Args:
             api_path (str): The base path to the API data directory or URL.
             is_remote (bool): Indicates if the API path is a remote URL.
+            db_url (str): The URL to the database to store the fetched data.
         """
         self._api_path = Path(api_path).resolve() if not is_remote else api_path
         self._is_remote = is_remote
@@ -105,6 +106,8 @@ class P2PoolAPI:
         Args:
             cache (dict | list): The cache dictionary to retrieve data from.
             keys (list): A list of keys to traverse the nested dictionary.
+            table_name (str): The name of the table to retrieve data from.
+            selection (str): The column to select from the table.
 
         Returns:
             Any: The retrieved data if the keys exist, otherwise "N/A".
