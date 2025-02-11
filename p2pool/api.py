@@ -615,6 +615,7 @@ class P2PoolAPI:
                 heights.append(i["height"])
             return heights
         except Exception as e:
+            log.error(f"An error occurred fetching pool block heights: {e}")
             return "N/A"
 
     @property
@@ -632,6 +633,7 @@ class P2PoolAPI:
                 hashes.append(i["hash"])
             return hashes
         except Exception as e:
+            log.error(f"An error occurred fetching pool block hashes: {e}")
             return "N/A"
 
     @property
@@ -649,6 +651,7 @@ class P2PoolAPI:
                 difficulties.append(i["difficulty"])
             return difficulties
         except Exception as e:
+            log.error(f"An error occurred fetching pool block difficulties: {e}")
             return "N/A"
 
     @property
@@ -666,6 +669,7 @@ class P2PoolAPI:
                 total_hashes.append(i["totalHashes"])
             return total_hashes
         except Exception as e:
+            log.error(f"An error occurred fetching pool block total hashes: {e}")
             return "N/A"
 
     @property
@@ -683,6 +687,7 @@ class P2PoolAPI:
                 timestamps.append(i["ts"])
             return timestamps
         except Exception as e:
+            log.error(f"An error occurred fetching pool block timestamps: {e}")
             return "N/A"
     
     @property
@@ -837,7 +842,7 @@ class P2PoolAPI:
         return self._get_data_from_cache(self._stats_mod_cache, ["config", "ports"], _stats_mod_table_name, "ports")
 
     @property
-    def stats_mod_port_value(self) -> list[int]:
+    def stats_mod_port_values(self) -> list[int]:
         """
         Returns the list of ports in the stats mod config.
 
@@ -848,9 +853,10 @@ class P2PoolAPI:
         try:
             config_ports = self._get_data_from_cache(self._stats_mod_cache, ["config", "ports"], _stats_mod_table_name, "ports")
             for i in config_ports:
-                ports.append(config_ports[i]["port"])
+                ports.append(i["port"])
             return ports
         except Exception as e:
+            log.error(f"An error occurred fetching stats mod port values: {e}")
             return "N/A"
 
     @property
@@ -865,9 +871,10 @@ class P2PoolAPI:
         try:
             config_ports = self._get_data_from_cache(self._stats_mod_cache, ["config", "ports"], _stats_mod_table_name, "ports")
             for i in config_ports:
-                tls.append(config_ports[i]["tls"])
+                tls.append(i["tls"])
             return tls
         except Exception as e:
+            log.error(f"An error occurred fetching stats mod TLS settings: {e}")
             return "N/A"
 
     @property
