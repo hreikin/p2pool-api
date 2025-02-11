@@ -1,4 +1,4 @@
 # PoolBlocks
 
-::: xmrig.models.PoolBlocks
+::: p2pool.models.PoolBlocks
     handler: python

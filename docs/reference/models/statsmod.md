@@ -1,4 +1,4 @@
 # StatsMod
 
-::: xmrig.models.StatsMod
+::: p2pool.models.StatsMod
     handler: python

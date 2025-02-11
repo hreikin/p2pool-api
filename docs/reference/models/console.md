@@ -1,4 +1,4 @@
 # Console
 
-::: xmrig.models.Console
+::: p2pool.models.Console
     handler: python

@@ -1,4 +1,4 @@
 # NetworkStats
 
-::: xmrig.models.NetworkStats
+::: p2pool.models.NetworkStats
     handler: python
