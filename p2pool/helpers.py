@@ -1,3 +1,13 @@
+"""
+P2Pool Helpers module.
+
+This module provides constants for various API endpoints and table names used in the P2Pool API.
+It includes:
+
+- API endpoints for local console, P2P, stratum, network stats, pool blocks, pool stats, and stats mod.
+- Table names corresponding to the API endpoints.
+"""
+
 _local_console_endpoint = "local/console"
 _local_p2p_endpoint = "local/p2p"
 _local_stratum_endpoint = "local/stratum"
