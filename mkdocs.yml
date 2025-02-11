@@ -27,7 +27,25 @@ theme:
 nav:
   - "Home": "README.md"
   - "Usage": "usage.md"
-  - "Reference": "reference.md"
+  - "Examples": "examples.md"
+  - "Logging": "logger.md"
+  - "Properties": "properties.md"
+  - "Reference":
+    - "Classes":
+      - "P2PoolAPI": "reference/classes/api.md"
+      - "P2PoolDatabase": "reference/classes/db.md"
+    - "Exceptions":
+      - "P2PoolAPIError": "reference/exceptions/p2poolapierror.md"
+      - "P2PoolConnectionError": "reference/exceptions/p2poolconnectionerror.md"
+      - "P2PoolDatabaseError": "reference/exceptions/p2pooldatabaseerror.md"
+    - "Models":
+      - "Console": "reference/models/console.md"
+      - "P2P": "reference/models/p2p.md"
+      - "Stratum": "reference/models/stratum.md"
+      - "NetworkStats": "reference/models/networkstats.md"
+      - "PoolBlocks": "reference/models/poolblocks.md"
+      - "PoolStats": "reference/models/poolstats.md"
+      - "StatsMod": "reference/models/statsmod.md"
   - "Contributing": "CONTRIBUTING.md"
 
 plugins:
