@@ -9,7 +9,7 @@ logging.basicConfig(
     ]
 )
 log = logging.getLogger("ExampleLog")
-api_path = "api/"               # Can also be a URL: api_path = "http://example.com/api/"
+api_path = "../api/"               # Can also be a URL: api_path = "http://example.com/api/"
 
 log.info("####################################################################################################################################")
 log.info("## Please ensure you have a running P2Pool instance to connect to and have updated the connection details within the env.py file. ##")
