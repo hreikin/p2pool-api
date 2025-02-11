@@ -281,7 +281,7 @@ class P2PoolDatabase:
             pool = json_data.get("pool"),
             stats = json_data["pool"].get("stats") if json_data.get("pool") else None,
             last_block_found = json_data["pool"]["stats"].get("lastBlockFound") if json_data.get("pool") and json_data["pool"].get("stats") else None,
-            blocks = json_data["pool"].get("blocks"),
+            blocks = json_data["pool"].get("blocks") if json_data.get("pool") else None,
             miners = json_data["pool"].get("miners") if json_data.get("pool") else None,
             hashrate = json_data["pool"].get("hashrate") if json_data.get("pool") else None,
             round_hashes = json_data["pool"].get("roundHashes") if json_data.get("pool") else None
