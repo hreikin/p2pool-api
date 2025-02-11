@@ -8,6 +8,7 @@ This page provides detailed examples of how to use the `p2pool` API. Each exampl
 02. [Update All Endpoints](#update-all-endpoints)
 03. [Update Individual Endpoints](#update-individual-endpoints)
 04. [Access Properties](#access-properties)
+05. [Full Example](#full-example)
 
 ## Add P2Pool
 
@@ -30,7 +31,7 @@ This example demonstrates how to update all endpoints.
 This example demonstrates how to update individual endpoints. 
 
 ```python title="update_individual_endpoints.py" linenums="1"
-{% include "../examples/update_individual_endpoints.py" %}
+{% include "../examples/update_individual_endpoint.py" %}
 ```
 
 ## Access Properties
@@ -39,4 +40,12 @@ This example demonstrates how to access properties.
 
 ```python title="access_properties.py" linenums="1"
 {% include "../examples/access_properties.py" %}
+```
+
+## Full Example
+
+This example demonstrates a full example. 
+
+```python title="full_example.py" linenums="1"
+{% include "../examples/full_example.py" %}
 ```
