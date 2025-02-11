@@ -44,14 +44,15 @@ Helpers:
 # // TODO: Add database functionality to the module.
 # // TODO: Create unittests for the module.
 # // TODO: Create examples.
-# // TODO: Update documentation and docstrings.
+# // TODO: Docstrings
+# TODO: Update documentation.
 # TODO: Database example
 # TODO: P2PoolConnectionError: is it used ?
 
 __name__ = "p2pool"
 __author__ = "hreikin"
 __email__ = "hreikin@gmail.com"
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 __license__ = "MIT"
 __description__ = "This module provides objects to interact with the P2Pool API and store collected data in a database."
 __url__ = "https://hreikin.co.uk/p2pool-api"
