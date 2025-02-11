@@ -12,7 +12,11 @@ class P2PoolDatabase:
     """
     P2Pool Database class.
 
-    This class provides methods to interact with the P2Pool database.    
+    This class provides methods to interact with the P2Pool database.
+
+    Attributes:
+        _engines (dict): Dictionary containing the database engines.
+        _table_model_map (dict): Dictionary mapping table names to ORM model classes.
     """
     _engines = {}
     _table_model_map = {
