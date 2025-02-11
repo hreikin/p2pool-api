@@ -327,12 +327,12 @@ class P2PoolDatabase:
 
             # Apply time filters
             if start_time:
-                query = query.filter(model_class.timestamp >= start_time)
+                query = query.filter(model_class.time >= start_time)
             if end_time:
-                query = query.filter(model_class.timestamp <= end_time)
+                query = query.filter(model_class.time <= end_time)
 
             # Apply limit
-            query = query.order_by(model_class.timestamp.desc()).limit(limit)
+            query = query.order_by(model_class.time.desc()).limit(limit)
 
             # Execute the query and fetch results
             results = query.all()
